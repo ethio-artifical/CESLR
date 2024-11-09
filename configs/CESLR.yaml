@@ -1,0 +1,4 @@
+dataset_root: ./dataset/CESLR/CESLR-multisigner
+dict_path: ./preprocess/CESLR/gloss_dict.npy
+evaluation_dir: ./evaluation/slr_eval
+evaluation_prefix: CESLR-groundtruth
