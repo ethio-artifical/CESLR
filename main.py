@@ -109,17 +109,18 @@ class Processor():
 
     def model_to_device(self, model):
         model = model.to(self.device.output_device)
-        if len(self.device.gpu_list) > 1:
+        if torch.cuda.is_available() and len(self.device.gpu_list) > 1:
             model.conv2d = nn.DataParallel(
                 model.conv2d,
                 device_ids=self.device.gpu_list,
                 output_device=self.device.output_device)
-        model = convert_model(model)
-        model.cuda()
+        if torch.cuda.is_available():
+            model = convert_model(model)
+        model = model.to(self.device.output_device)
         return model
 
     def load_model_weights(self, model, weight_path):
-        state_dict = torch.load(weight_path)
+        state_dict = torch.load(weight_path, map_location='cpu', weights_only=False)
         if len(self.arg.ignore_weights):
             for w in self.arg.ignore_weights:
                 if state_dict.pop(w, None) is not None:
@@ -140,7 +141,7 @@ class Processor():
 
     def load_checkpoint_weights(self, model, optimizer):
         self.load_model_weights(model, self.arg.load_checkpoints)
-        state_dict = torch.load(self.arg.load_checkpoints)
+        state_dict = torch.load(self.arg.load_checkpoints, map_location='cpu', weights_only=False)
 
         if len(torch.cuda.get_rng_state_all()) == len(state_dict['rng_state']['cuda']):
             print("Loading random seeds...")
@@ -154,7 +155,7 @@ class Processor():
             optimizer.scheduler.load_state_dict(state_dict["scheduler_state_dict"])
 
         self.arg.optimizer_args['start_epoch'] = state_dict["epoch"] + 1
-        self.recoder.print_log("Resuming from checkpoint: epoch {self.arg.optimizer_args['start_epoch']}")
+        self.recoder.print_log(f"Resuming from checkpoint: epoch {self.arg.optimizer_args['start_epoch']}")
 
     def load_data(self):
         print("Loading data")
