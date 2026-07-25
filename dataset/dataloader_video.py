@@ -114,7 +114,9 @@ class BaseFeeder(data.Dataset):
         video, label, info = list(zip(*batch))
         if len(video[0].shape) > 3:
             max_len = len(video[0])
-            video_length = torch.LongTensor([np.ceil(len(vid) / 4.0) * 4 + 12 for vid in video])
+            # int(): np.ceil yields float64, and passing that to LongTensor is a
+            # deprecated implicit conversion that newer numpy/python turn into an error.
+            video_length = torch.LongTensor([int(np.ceil(len(vid) / 4.0)) * 4 + 12 for vid in video])
             left_pad = 6
             right_pad = int(np.ceil(max_len / 4.0)) * 4 - max_len + 6
             max_len = max_len + left_pad + right_pad
