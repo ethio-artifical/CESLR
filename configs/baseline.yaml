@@ -39,7 +39,7 @@ feeder_args:
 model: slr_network.SLRModel
 decode_mode: beam
 model_args:
-  num_classes: 63  # overridden at runtime in main.py from gloss_dict (62 glosses + blank)
+  num_classes: 13  # ignored: main.py sets it from gloss_dict (glosses + 1 blank)
   c2d_type: resnet18
   conv_type: 2
   use_bn: 1
