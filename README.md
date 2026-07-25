@@ -586,10 +586,6 @@ CESLR/
 This work builds on VAC (ICCV 2021) and CorrNet (CVPR 2023):
 
 ```bibtex
-@inproceedings{hu2023continuous,
-  title={Continuous Sign Language Recognition with Correlation Network},
-  author={Hu, Lianyu and Gao, Liqing and Liu, Zekang and Feng, Wei},
-  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  year={2023},
+Tegegne Anteneh Yehalem, Hailu Birhanu Belay, Meshesha Million. End-to-End Continuous Ethiopia Sign Language Recognition. 2024. ⟨hal-04812102⟩
 }
 ```
