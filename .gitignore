@@ -4,3 +4,6 @@ __pycache__/
 .DS_Store
 gradio_temp/
 *.log
+
+# dataset pasted at repo root (frames are large; keep them out of git)
+CESLR-multisigner/
