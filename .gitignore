@@ -1,0 +1,6 @@
+dataset/CESLR/
+work_dir/
+__pycache__/
+.DS_Store
+gradio_temp/
+*.log

@@ -1,25 +1,19 @@
 feeder: dataset.dataloader_video.BaseFeeder
 phase: train
-dataset: CESLR
-# dataset: phoenix14-si5
-num_epoch: 70
-work_dir: ./work_dir/baseline_res18/
+dataset: CESLR_mini
+num_epoch: 10
+work_dir: ./work_dir/mini_test/
 batch_size: 2
 random_seed: 0
-test_batch_size: 2   # 8 can OOM a 16GB T4 with ~280-frame clips
-num_worker: 4        # kaggle gives 4 vCPUs
-device: 0,1
-log_interval: 50
+test_batch_size: 1
+num_worker: 0
+device: 0
+log_interval: 1
 eval_interval: 1
-save_interval: 1     # kaggle sessions can die; never lose more than 1 epoch
-# python in default
+save_interval: 1
 evaluate_tool: python
 loss_weights:
   SeqCTC: 1.0
-  # VAC
-  # ConvCTC: 1.0
-  # Dist: 10.0
-#load_weights: ''
 
 optimizer_args:
   optimizer: Adam
@@ -39,10 +33,9 @@ feeder_args:
 model: slr_network.SLRModel
 decode_mode: beam
 model_args:
-  num_classes: 13  # ignored: main.py sets it from gloss_dict (glosses + 1 blank)
+  num_classes: 63  # overridden at runtime from gloss_dict
   c2d_type: resnet18
   conv_type: 2
   use_bn: 1
-  # SMKD
   share_classifier: False
   weight_norm: False

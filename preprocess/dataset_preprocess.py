@@ -11,14 +11,14 @@ from functools import partial
 from multiprocessing import Pool
 
 
-def csv2dict(anno_path, dataset_type):
+def csv2dict(anno_path, dataset_type, input_res='210x260px'):
     inputs_list = pandas.read_csv(anno_path)
     # if dataset_type == 'train':
     #     broken_data = [2390]
     #     inputs_list.drop(broken_data, inplace=True)
     inputs_list = (inputs_list.to_dict()['id|folder|signer|annotation'].values())
     info_dict = dict()
-    info_dict['prefix'] = anno_path.rsplit("/", 3)[0] + "/features/fullFrame-210x260px"
+    info_dict['prefix'] = anno_path.rsplit("/", 3)[0] + f"/features/fullFrame-{input_res}"
     print(f"Generate information dict from {anno_path}")
     for file_idx, file_info in tqdm(enumerate(inputs_list), total=len(inputs_list)):
         fileid, folder, signer, label = file_info.split("|")
@@ -62,12 +62,12 @@ def resize_img(img_path, dsize='210x260px'):
     return img
 
 
-def resize_dataset(video_idx, dsize, info_dict):
+def resize_dataset(video_idx, dsize, info_dict, input_res='210x260px'):
     info = info_dict[video_idx]
     img_list = glob.glob(f"{info_dict['prefix']}/{info['folder']}")
     for img_path in img_list:
         rs_img = resize_img(img_path, dsize=dsize)
-        rs_img_path = img_path.replace("210x260px", dsize)
+        rs_img_path = img_path.replace(input_res, dsize)
         rs_img_dir = os.path.dirname(rs_img_path)
         if not os.path.exists(rs_img_dir):
             os.makedirs(rs_img_dir)
@@ -95,6 +95,9 @@ if __name__ == '__main__':
                         help='path to the dataset')
     parser.add_argument('--annotation-prefix', type=str, default='annotations/manual/{}.corpus.csv',
                         help='annotation prefix')
+    parser.add_argument('--input-res', type=str, default='210x260px',
+                        help='resolution folder the raw frames live in, i.e. '
+                             'features/fullFrame-<input-res>')
     parser.add_argument('--output-res', type=str, default='256x256px',
                         help='resize resolution for image sequence')
     parser.add_argument('--process-image', '-p', action='store_true',
@@ -103,13 +106,22 @@ if __name__ == '__main__':
                         help='whether adopts multiprocessing to accelate the preprocess')
 
     args = parser.parse_args()
+    # Resized paths are built by substituting input-res -> output-res in the source
+    # path. If they match, that substitution is a no-op and we would overwrite the
+    # originals in place.
+    if args.process_image and args.input_res == args.output_res:
+        parser.error(f"--process-image with --input-res == --output-res "
+                     f"({args.input_res}) would overwrite the source frames "
+                     f"in place. Drop --process-image, or pick a different "
+                     f"--output-res.")
     mode = ["dev", "test", "train"]
     sign_dict = dict()
     if not os.path.exists(f"./{args.dataset}"):
         os.makedirs(f"./{args.dataset}")
     for md in mode:
         # generate information dict
-        information = csv2dict(f"{args.dataset_root}/{args.annotation_prefix.format(md)}", dataset_type=md)
+        information = csv2dict(f"{args.dataset_root}/{args.annotation_prefix.format(md)}",
+                               dataset_type=md, input_res=args.input_res)
         np.save(f"./{args.dataset}/{md}_info.npy", information)
         # update the total gloss dict
         sign_dict_update(sign_dict, information)
@@ -117,13 +129,15 @@ if __name__ == '__main__':
         generate_gt_stm(information, f"./{args.dataset}/{args.dataset}-groundtruth-{md}.stm")
         # resize images
         video_index = np.arange(len(information) - 1)
-        print(f"Resize image to {args.output_res}")
         if args.process_image:
+            print(f"Resize image from {args.input_res} to {args.output_res}")
+            resize = partial(resize_dataset, dsize=args.output_res,
+                             info_dict=information, input_res=args.input_res)
             if args.multiprocessing:
-                run_mp_cmd(10, partial(resize_dataset, dsize=args.output_res, info_dict=information), video_index)
+                run_mp_cmd(10, resize, video_index)
             else:
                 for idx in tqdm(video_index):
-                    run_cmd(partial(resize_dataset, dsize=args.output_res, info_dict=information), idx)
+                    run_cmd(resize, idx)
     sign_dict = sorted(sign_dict.items(), key=lambda d: d[0])
     save_dict = {}
     for idx, (key, value) in enumerate(sign_dict):
