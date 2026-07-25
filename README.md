@@ -585,7 +585,7 @@ CESLR/
 
 This work builds on VAC (ICCV 2021) and CorrNet (CVPR 2023):
 
-```bibtex
+```bibtex{
 Tegegne Anteneh Yehalem, Hailu Birhanu Belay, Meshesha Million. End-to-End Continuous Ethiopia Sign Language Recognition. 2024. ⟨hal-04812102⟩
 }
 ```
