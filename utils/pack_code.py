@@ -17,7 +17,10 @@ def pack_code(git_root, run_dir):
             check=True, stdout=subprocess.PIPE, text=True,
         )
         if diff_process.stdout:
-            logger.warning('Working tree is dirty. Patch:\n%s', diff_process.stdout)
+            # Only say where the patch went -- dumping the whole diff to the
+            # console buries the training output.
+            logger.warning('Working tree is dirty. Patch saved to %s/dirty.patch',
+                           run_dir)
             with open(f"{run_dir}/dirty.patch", 'w') as f:
                 f.write(diff_process.stdout)
     else:

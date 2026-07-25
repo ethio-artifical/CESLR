@@ -1,6 +1,13 @@
+import logging
+
 import torch
 import numpy as np
 from itertools import groupby
+
+# pyctcdecode warns about missing kenlm bindings on every construction. We decode
+# without a language model, so the warning is noise -- one per dataloader worker,
+# per split, per epoch.
+logging.getLogger("pyctcdecode").setLevel(logging.ERROR)
 
 try:
     from pyctcdecode import build_ctcdecoder

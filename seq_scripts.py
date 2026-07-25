@@ -24,6 +24,7 @@ def seq_train(loader, model, optimizer, device, epoch_idx, recoder):
         loss = model.criterion_calculation(ret_dict, label, label_lgt)
         if np.isinf(loss.item()) or np.isnan(loss.item()):
             print(data[-1])
+            optimizer.zero_grad()
             continue
         optimizer.zero_grad()
         loss.backward()
@@ -33,7 +34,14 @@ def seq_train(loader, model, optimizer, device, epoch_idx, recoder):
         if batch_idx % recoder.log_interval == 0:
             recoder.print_log(
                 '\tEpoch: {}, Batch({}/{}) done. Loss: {:.8f}  lr:{:.6f}'
-                    .format(epoch_idx, batch_idx, len(loader), loss.item(), clr[0]))
+                    .format(epoch_idx, batch_idx, len(loader), loss_value[-1], clr[0]))
+        # Clips vary in length, so every step asks the allocator for a differently
+        # sized block. On MPS that fragments unified memory badly enough that step
+        # time creeps from ~2s to ~30s within one epoch; releasing each step's
+        # tensors and periodically draining the cache keeps it flat.
+        del vid, vid_lgt, label, label_lgt, ret_dict, loss
+        if torch.backends.mps.is_available() and batch_idx % 10 == 0:
+            torch.mps.empty_cache()
     optimizer.scheduler.step()
     recoder.print_log('\tMean training loss: {:.10f}.'.format(np.mean(loss_value)))
     return loss_value
@@ -78,11 +86,13 @@ def seq_eval(cfg, loader, model, device, mode, epoch, work_dir, recoder,
             python_evaluate=python_eval,
             triplet=True,
         )
-    except:
-        print("Unexpected error:", sys.exc_info()[0])
+    except Exception:
+        # Print the full traceback: a bare handler that only reports 100% WER
+        # makes a broken evaluator look like a model that simply never learns.
+        import traceback
+        print("Evaluation failed -- reporting WER as 100%. Cause:")
+        traceback.print_exc()
         lstm_ret = 100.0
-    finally:
-        pass
     recoder.print_log(f"Epoch {epoch}, {mode} {lstm_ret: 2.2f}%", f"{work_dir}/{mode}.txt")
     return lstm_ret
 

@@ -1,5 +1,7 @@
 import os
 import pdb
+import shlex
+import sys
 from .python_wer_evaluation import wer_calculation
 
 
@@ -14,7 +16,13 @@ def evaluate(prefix="./", mode="dev", evaluate_dir=None, evaluate_prefix=None,
     os.system(f"bash {evaluate_dir}/preprocess.sh {prefix + output_file} {prefix}tmp.ctm {prefix}tmp2.ctm")
     os.system(f"cat {evaluate_dir}/{evaluate_prefix}-{mode}.stm | sort  -k1,1 > {prefix}tmp.stm")
     # tmp2.ctm: prediction result; tmp.stm: ground-truth result
-    os.system(f"python {evaluate_dir}/mergectmstm.py {prefix}tmp2.ctm {prefix}tmp.stm")
+    # Use the running interpreter, not a bare "python": on macOS/venv setups that
+    # name often does not exist, mergectmstm.py silently never runs, and clips the
+    # model predicted nothing for stay missing from the CTM -- which then raises a
+    # KeyError in wer_calculation and reports the whole split as 100% WER.
+    # Quote it: the interpreter path may contain spaces.
+    os.system(f"{shlex.quote(sys.executable)} {evaluate_dir}/mergectmstm.py "
+              f"{prefix}tmp2.ctm {prefix}tmp.stm")
     os.system(f"cp {prefix}tmp2.ctm {prefix}out.{output_file}")
     if python_evaluate:
         ret = wer_calculation(f"{evaluate_dir}/{evaluate_prefix}-{mode}.stm", f"{prefix}out.{output_file}")
