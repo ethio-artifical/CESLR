@@ -1,0 +1,487 @@
+[ Sun Jul 26 04:38:34 2026 ] Parameters:
+{'work_dir': './work_dir/baseline_res18/', 'config': 'configs/baseline.yaml', 'random_fix': True, 'device': '0', 'phase': 'train', 'save_interval': 1, 'random_seed': 0, 'eval_interval': 1, 'print_log': True, 'log_interval': 50, 'evaluate_tool': 'python', 'feeder': 'dataset.dataloader_video.BaseFeeder', 'dataset': 'CESLR', 'dataset_info': {'dataset_root': './dataset/CESLR/CESLR-multisigner', 'dict_path': './preprocess/CESLR/gloss_dict.npy', 'evaluation_dir': './evaluation/slr_eval', 'evaluation_prefix': 'CESLR-groundtruth'}, 'num_worker': 4, 'feeder_args': {'mode': 'test', 'datatype': 'video', 'num_gloss': -1, 'drop_ratio': 1.0, 'prefix': './dataset/CESLR/CESLR-multisigner', 'transform_mode': False}, 'model': 'slr_network.SLRModel', 'model_args': {'num_classes': 63, 'c2d_type': 'resnet18', 'conv_type': 2, 'use_bn': 1, 'share_classifier': False, 'weight_norm': False}, 'load_weights': None, 'load_checkpoints': None, 'decode_mode': 'beam', 'ignore_weights': [], 'batch_size': 2, 'test_batch_size': 2, 'loss_weights': {'SeqCTC': 1.0}, 'optimizer_args': {'optimizer': 'Adam', 'base_lr': 0.0001, 'step': [20, 35], 'learning_ratio': 1, 'weight_decay': 0.0001, 'start_epoch': 0, 'nesterov': False}, 'num_epoch': 40}
+
+[ Sun Jul 26 04:38:37 2026 ] 	Epoch: 0, Batch(0/491) done. Loss: 77.89155579  lr:0.000100
+[ Sun Jul 26 04:39:25 2026 ] 	Epoch: 0, Batch(50/491) done. Loss: 13.45770645  lr:0.000100
+[ Sun Jul 26 04:40:12 2026 ] 	Epoch: 0, Batch(100/491) done. Loss: 12.82390022  lr:0.000100
+[ Sun Jul 26 04:41:00 2026 ] 	Epoch: 0, Batch(150/491) done. Loss: 13.41959858  lr:0.000100
+[ Sun Jul 26 04:41:48 2026 ] 	Epoch: 0, Batch(200/491) done. Loss: 12.16568279  lr:0.000100
+[ Sun Jul 26 04:42:36 2026 ] 	Epoch: 0, Batch(250/491) done. Loss: 13.33337402  lr:0.000100
+[ Sun Jul 26 04:43:24 2026 ] 	Epoch: 0, Batch(300/491) done. Loss: 12.09472275  lr:0.000100
+[ Sun Jul 26 04:44:10 2026 ] 	Epoch: 0, Batch(350/491) done. Loss: 10.37470722  lr:0.000100
+[ Sun Jul 26 04:45:04 2026 ] 	Epoch: 0, Batch(400/491) done. Loss: 18.03745079  lr:0.000100
+[ Sun Jul 26 04:45:54 2026 ] 	Epoch: 0, Batch(450/491) done. Loss: 11.12038994  lr:0.000100
+[ Sun Jul 26 04:46:30 2026 ] 	Mean training loss: 13.7004122647.
+[ Sun Jul 26 04:51:11 2026 ] Dev WER: 88.39%
+[ Sun Jul 26 04:51:15 2026 ] 	Epoch: 1, Batch(0/491) done. Loss: 11.44708252  lr:0.000100
+[ Sun Jul 26 04:52:05 2026 ] 	Epoch: 1, Batch(50/491) done. Loss: 8.36987114  lr:0.000100
+[ Sun Jul 26 04:52:55 2026 ] 	Epoch: 1, Batch(100/491) done. Loss: 10.63532352  lr:0.000100
+[ Sun Jul 26 04:53:42 2026 ] 	Epoch: 1, Batch(150/491) done. Loss: 9.71615601  lr:0.000100
+[ Sun Jul 26 04:54:30 2026 ] 	Epoch: 1, Batch(200/491) done. Loss: 10.75572586  lr:0.000100
+[ Sun Jul 26 04:55:19 2026 ] 	Epoch: 1, Batch(250/491) done. Loss: 10.62846279  lr:0.000100
+[ Sun Jul 26 04:56:08 2026 ] 	Epoch: 1, Batch(300/491) done. Loss: 9.90030384  lr:0.000100
+[ Sun Jul 26 04:56:56 2026 ] 	Epoch: 1, Batch(350/491) done. Loss: 9.61325741  lr:0.000100
+[ Sun Jul 26 04:57:42 2026 ] 	Epoch: 1, Batch(400/491) done. Loss: 9.54925919  lr:0.000100
+[ Sun Jul 26 04:58:29 2026 ] 	Epoch: 1, Batch(450/491) done. Loss: 8.32386875  lr:0.000100
+[ Sun Jul 26 04:59:08 2026 ] 	Mean training loss: 9.4820985707.
+[ Sun Jul 26 05:03:34 2026 ] Dev WER: 81.08%
+[ Sun Jul 26 05:03:38 2026 ] 	Epoch: 2, Batch(0/491) done. Loss: 10.97945023  lr:0.000100
+[ Sun Jul 26 05:04:25 2026 ] 	Epoch: 2, Batch(50/491) done. Loss: 6.43520641  lr:0.000100
+[ Sun Jul 26 05:05:15 2026 ] 	Epoch: 2, Batch(100/491) done. Loss: 7.93963909  lr:0.000100
+[ Sun Jul 26 05:06:04 2026 ] 	Epoch: 2, Batch(150/491) done. Loss: 7.86346483  lr:0.000100
+[ Sun Jul 26 05:06:49 2026 ] 	Epoch: 2, Batch(200/491) done. Loss: 6.27669287  lr:0.000100
+[ Sun Jul 26 05:07:36 2026 ] 	Epoch: 2, Batch(250/491) done. Loss: 7.61409187  lr:0.000100
+[ Sun Jul 26 05:08:29 2026 ] 	Epoch: 2, Batch(300/491) done. Loss: 7.03779650  lr:0.000100
+[ Sun Jul 26 05:09:16 2026 ] 	Epoch: 2, Batch(350/491) done. Loss: 7.53883839  lr:0.000100
+[ Sun Jul 26 05:10:04 2026 ] 	Epoch: 2, Batch(400/491) done. Loss: 7.22119045  lr:0.000100
+[ Sun Jul 26 05:10:54 2026 ] 	Epoch: 2, Batch(450/491) done. Loss: 6.51973343  lr:0.000100
+[ Sun Jul 26 05:11:33 2026 ] 	Mean training loss: 7.7933637159.
+[ Sun Jul 26 05:15:53 2026 ] Dev WER: 77.42%
+[ Sun Jul 26 05:15:57 2026 ] 	Epoch: 3, Batch(0/491) done. Loss: 6.57187700  lr:0.000100
+[ Sun Jul 26 05:16:49 2026 ] 	Epoch: 3, Batch(50/491) done. Loss: 5.26568604  lr:0.000100
+[ Sun Jul 26 05:17:37 2026 ] 	Epoch: 3, Batch(100/491) done. Loss: 7.34176636  lr:0.000100
+[ Sun Jul 26 05:18:23 2026 ] 	Epoch: 3, Batch(150/491) done. Loss: 5.75657463  lr:0.000100
+[ Sun Jul 26 05:19:11 2026 ] 	Epoch: 3, Batch(200/491) done. Loss: 4.78672314  lr:0.000100
+[ Sun Jul 26 05:20:03 2026 ] 	Epoch: 3, Batch(250/491) done. Loss: 8.77376270  lr:0.000100
+[ Sun Jul 26 05:20:50 2026 ] 	Epoch: 3, Batch(300/491) done. Loss: 7.61470079  lr:0.000100
+[ Sun Jul 26 05:21:39 2026 ] 	Epoch: 3, Batch(350/491) done. Loss: 6.22968531  lr:0.000100
+[ Sun Jul 26 05:22:27 2026 ] 	Epoch: 3, Batch(400/491) done. Loss: 4.33187962  lr:0.000100
+[ Sun Jul 26 05:23:14 2026 ] 	Epoch: 3, Batch(450/491) done. Loss: 6.21804237  lr:0.000100
+[ Sun Jul 26 05:23:52 2026 ] 	Mean training loss: 6.3806416445.
+[ Sun Jul 26 05:28:16 2026 ] Dev WER: 73.55%
+[ Sun Jul 26 05:28:19 2026 ] 	Epoch: 4, Batch(0/491) done. Loss: 5.28777170  lr:0.000100
+[ Sun Jul 26 05:29:09 2026 ] 	Epoch: 4, Batch(50/491) done. Loss: 4.74203348  lr:0.000100
+[ Sun Jul 26 05:29:59 2026 ] 	Epoch: 4, Batch(100/491) done. Loss: 6.12925529  lr:0.000100
+[ Sun Jul 26 05:30:50 2026 ] 	Epoch: 4, Batch(150/491) done. Loss: 4.45115471  lr:0.000100
+[ Sun Jul 26 05:31:39 2026 ] 	Epoch: 4, Batch(200/491) done. Loss: 7.45677185  lr:0.000100
+[ Sun Jul 26 05:32:32 2026 ] 	Epoch: 4, Batch(250/491) done. Loss: 6.67278337  lr:0.000100
+[ Sun Jul 26 05:33:19 2026 ] 	Epoch: 4, Batch(300/491) done. Loss: 4.60774326  lr:0.000100
+[ Sun Jul 26 05:34:08 2026 ] 	Epoch: 4, Batch(350/491) done. Loss: 3.62026119  lr:0.000100
+[ Sun Jul 26 05:34:56 2026 ] 	Epoch: 4, Batch(400/491) done. Loss: 2.07687712  lr:0.000100
+[ Sun Jul 26 05:35:44 2026 ] 	Epoch: 4, Batch(450/491) done. Loss: 4.51502419  lr:0.000100
+[ Sun Jul 26 05:36:23 2026 ] 	Mean training loss: 5.2978997544.
+[ Sun Jul 26 05:40:51 2026 ] Dev WER: 61.51%
+[ Sun Jul 26 05:40:54 2026 ] 	Epoch: 5, Batch(0/491) done. Loss: 4.54369783  lr:0.000100
+[ Sun Jul 26 05:41:42 2026 ] 	Epoch: 5, Batch(50/491) done. Loss: 3.71299577  lr:0.000100
+[ Sun Jul 26 05:42:30 2026 ] 	Epoch: 5, Batch(100/491) done. Loss: 4.39989662  lr:0.000100
+[ Sun Jul 26 05:43:27 2026 ] 	Epoch: 5, Batch(150/491) done. Loss: 1.67744815  lr:0.000100
+[ Sun Jul 26 05:44:15 2026 ] 	Epoch: 5, Batch(200/491) done. Loss: 4.36894035  lr:0.000100
+[ Sun Jul 26 05:45:07 2026 ] 	Epoch: 5, Batch(250/491) done. Loss: 6.58873558  lr:0.000100
+[ Sun Jul 26 05:45:55 2026 ] 	Epoch: 5, Batch(300/491) done. Loss: 3.29765320  lr:0.000100
+[ Sun Jul 26 05:46:46 2026 ] 	Epoch: 5, Batch(350/491) done. Loss: 4.37421036  lr:0.000100
+[ Sun Jul 26 05:47:34 2026 ] 	Epoch: 5, Batch(400/491) done. Loss: 2.61655164  lr:0.000100
+[ Sun Jul 26 05:48:24 2026 ] 	Epoch: 5, Batch(450/491) done. Loss: 1.68669450  lr:0.000100
+[ Sun Jul 26 05:49:05 2026 ] 	Mean training loss: 3.7294544692.
+[ Sun Jul 26 05:53:34 2026 ] Dev WER: 34.62%
+[ Sun Jul 26 05:53:37 2026 ] 	Epoch: 6, Batch(0/491) done. Loss: 1.95584583  lr:0.000100
+[ Sun Jul 26 05:54:25 2026 ] 	Epoch: 6, Batch(50/491) done. Loss: 1.16474187  lr:0.000100
+[ Sun Jul 26 05:55:12 2026 ] 	Epoch: 6, Batch(100/491) done. Loss: 4.02824736  lr:0.000100
+[ Sun Jul 26 05:56:02 2026 ] 	Epoch: 6, Batch(150/491) done. Loss: 2.65918088  lr:0.000100
+[ Sun Jul 26 05:56:50 2026 ] 	Epoch: 6, Batch(200/491) done. Loss: 1.80108666  lr:0.000100
+[ Sun Jul 26 05:57:38 2026 ] 	Epoch: 6, Batch(250/491) done. Loss: 1.08929014  lr:0.000100
+[ Sun Jul 26 05:58:26 2026 ] 	Epoch: 6, Batch(300/491) done. Loss: 1.16951787  lr:0.000100
+[ Sun Jul 26 05:59:14 2026 ] 	Epoch: 6, Batch(350/491) done. Loss: 1.24068773  lr:0.000100
+[ Sun Jul 26 06:00:02 2026 ] 	Epoch: 6, Batch(400/491) done. Loss: 1.11489415  lr:0.000100
+[ Sun Jul 26 06:00:50 2026 ] 	Epoch: 6, Batch(450/491) done. Loss: 4.52588367  lr:0.000100
+[ Sun Jul 26 06:01:29 2026 ] 	Mean training loss: 2.4964185738.
+[ Sun Jul 26 06:05:53 2026 ] Dev WER: 32.04%
+[ Sun Jul 26 06:05:56 2026 ] 	Epoch: 7, Batch(0/491) done. Loss: 0.67499316  lr:0.000100
+[ Sun Jul 26 06:06:50 2026 ] 	Epoch: 7, Batch(50/491) done. Loss: 1.01229084  lr:0.000100
+[ Sun Jul 26 06:07:37 2026 ] 	Epoch: 7, Batch(100/491) done. Loss: 0.20817429  lr:0.000100
+[ Sun Jul 26 06:08:26 2026 ] 	Epoch: 7, Batch(150/491) done. Loss: 1.12364006  lr:0.000100
+[ Sun Jul 26 06:09:13 2026 ] 	Epoch: 7, Batch(200/491) done. Loss: 1.69050503  lr:0.000100
+[ Sun Jul 26 06:10:00 2026 ] 	Epoch: 7, Batch(250/491) done. Loss: 0.81135577  lr:0.000100
+[ Sun Jul 26 06:10:49 2026 ] 	Epoch: 7, Batch(300/491) done. Loss: 1.15104032  lr:0.000100
+[ Sun Jul 26 06:11:37 2026 ] 	Epoch: 7, Batch(350/491) done. Loss: 2.59471464  lr:0.000100
+[ Sun Jul 26 06:12:25 2026 ] 	Epoch: 7, Batch(400/491) done. Loss: 0.51204848  lr:0.000100
+[ Sun Jul 26 06:13:13 2026 ] 	Epoch: 7, Batch(450/491) done. Loss: 0.57149607  lr:0.000100
+[ Sun Jul 26 06:13:52 2026 ] 	Mean training loss: 1.6123636220.
+[ Sun Jul 26 06:18:16 2026 ] Dev WER: 21.29%
+[ Sun Jul 26 06:18:19 2026 ] 	Epoch: 8, Batch(0/491) done. Loss: 1.62047541  lr:0.000100
+[ Sun Jul 26 06:19:07 2026 ] 	Epoch: 8, Batch(50/491) done. Loss: 0.43545559  lr:0.000100
+[ Sun Jul 26 06:19:54 2026 ] 	Epoch: 8, Batch(100/491) done. Loss: 1.39128923  lr:0.000100
+[ Sun Jul 26 06:20:44 2026 ] 	Epoch: 8, Batch(150/491) done. Loss: 1.10855913  lr:0.000100
+[ Sun Jul 26 06:21:33 2026 ] 	Epoch: 8, Batch(200/491) done. Loss: 5.46305513  lr:0.000100
+[ Sun Jul 26 06:22:18 2026 ] 	Epoch: 8, Batch(250/491) done. Loss: 0.83406448  lr:0.000100
+[ Sun Jul 26 06:23:10 2026 ] 	Epoch: 8, Batch(300/491) done. Loss: 5.12168694  lr:0.000100
+[ Sun Jul 26 06:23:57 2026 ] 	Epoch: 8, Batch(350/491) done. Loss: 1.83507550  lr:0.000100
+[ Sun Jul 26 06:24:47 2026 ] 	Epoch: 8, Batch(400/491) done. Loss: 8.38859367  lr:0.000100
+[ Sun Jul 26 06:25:35 2026 ] 	Epoch: 8, Batch(450/491) done. Loss: 1.55154848  lr:0.000100
+[ Sun Jul 26 06:26:14 2026 ] 	Mean training loss: 1.3227927861.
+[ Sun Jul 26 06:30:27 2026 ] Dev WER: 23.01%
+[ Sun Jul 26 06:30:32 2026 ] 	Epoch: 9, Batch(0/491) done. Loss: 0.43975681  lr:0.000100
+[ Sun Jul 26 06:31:19 2026 ] 	Epoch: 9, Batch(50/491) done. Loss: 1.29920268  lr:0.000100
+[ Sun Jul 26 06:32:05 2026 ] 	Epoch: 9, Batch(100/491) done. Loss: 1.24299407  lr:0.000100
+[ Sun Jul 26 06:32:53 2026 ] 	Epoch: 9, Batch(150/491) done. Loss: 1.29613256  lr:0.000100
+[ Sun Jul 26 06:33:42 2026 ] 	Epoch: 9, Batch(200/491) done. Loss: 0.31702590  lr:0.000100
+[ Sun Jul 26 06:34:31 2026 ] 	Epoch: 9, Batch(250/491) done. Loss: 0.64815247  lr:0.000100
+[ Sun Jul 26 06:35:21 2026 ] 	Epoch: 9, Batch(300/491) done. Loss: 0.95930928  lr:0.000100
+[ Sun Jul 26 06:36:09 2026 ] 	Epoch: 9, Batch(350/491) done. Loss: 0.83486348  lr:0.000100
+[ Sun Jul 26 06:36:59 2026 ] 	Epoch: 9, Batch(400/491) done. Loss: 1.04421473  lr:0.000100
+[ Sun Jul 26 06:37:48 2026 ] 	Epoch: 9, Batch(450/491) done. Loss: 1.18501627  lr:0.000100
+[ Sun Jul 26 06:38:26 2026 ] 	Mean training loss: 0.7625361704.
+[ Sun Jul 26 06:43:04 2026 ] Dev WER: 16.56%
+[ Sun Jul 26 06:43:07 2026 ] 	Epoch: 10, Batch(0/491) done. Loss: 0.47068718  lr:0.000100
+[ Sun Jul 26 06:43:54 2026 ] 	Epoch: 10, Batch(50/491) done. Loss: 0.47417724  lr:0.000100
+[ Sun Jul 26 06:44:40 2026 ] 	Epoch: 10, Batch(100/491) done. Loss: 1.14554250  lr:0.000100
+[ Sun Jul 26 06:45:32 2026 ] 	Epoch: 10, Batch(150/491) done. Loss: 0.35260251  lr:0.000100
+[ Sun Jul 26 06:46:20 2026 ] 	Epoch: 10, Batch(200/491) done. Loss: 0.83824354  lr:0.000100
+[ Sun Jul 26 06:47:10 2026 ] 	Epoch: 10, Batch(250/491) done. Loss: 1.28056216  lr:0.000100
+[ Sun Jul 26 06:47:58 2026 ] 	Epoch: 10, Batch(300/491) done. Loss: 0.48512441  lr:0.000100
+[ Sun Jul 26 06:48:44 2026 ] 	Epoch: 10, Batch(350/491) done. Loss: 0.08103634  lr:0.000100
+[ Sun Jul 26 06:49:34 2026 ] 	Epoch: 10, Batch(400/491) done. Loss: 1.45810032  lr:0.000100
+[ Sun Jul 26 06:50:22 2026 ] 	Epoch: 10, Batch(450/491) done. Loss: 1.22220206  lr:0.000100
+[ Sun Jul 26 06:51:01 2026 ] 	Mean training loss: 0.6652582778.
+[ Sun Jul 26 06:55:37 2026 ] Dev WER: 22.15%
+[ Sun Jul 26 06:55:40 2026 ] 	Epoch: 11, Batch(0/491) done. Loss: 0.63561457  lr:0.000100
+[ Sun Jul 26 06:56:28 2026 ] 	Epoch: 11, Batch(50/491) done. Loss: 0.24366331  lr:0.000100
+[ Sun Jul 26 06:57:15 2026 ] 	Epoch: 11, Batch(100/491) done. Loss: 0.32330263  lr:0.000100
+[ Sun Jul 26 06:58:03 2026 ] 	Epoch: 11, Batch(150/491) done. Loss: 0.24241526  lr:0.000100
+[ Sun Jul 26 06:58:52 2026 ] 	Epoch: 11, Batch(200/491) done. Loss: 1.87621820  lr:0.000100
+[ Sun Jul 26 06:59:38 2026 ] 	Epoch: 11, Batch(250/491) done. Loss: 0.41553563  lr:0.000100
+[ Sun Jul 26 07:00:28 2026 ] 	Epoch: 11, Batch(300/491) done. Loss: 0.10634631  lr:0.000100
+[ Sun Jul 26 07:01:15 2026 ] 	Epoch: 11, Batch(350/491) done. Loss: 0.04581185  lr:0.000100
+[ Sun Jul 26 07:02:05 2026 ] 	Epoch: 11, Batch(400/491) done. Loss: 0.40704334  lr:0.000100
+[ Sun Jul 26 07:02:52 2026 ] 	Epoch: 11, Batch(450/491) done. Loss: 3.67176890  lr:0.000100
+[ Sun Jul 26 07:03:31 2026 ] 	Mean training loss: 0.5977645110.
+[ Sun Jul 26 07:08:05 2026 ] Dev WER: 19.35%
+[ Sun Jul 26 07:08:08 2026 ] 	Epoch: 12, Batch(0/491) done. Loss: 0.19587277  lr:0.000100
+[ Sun Jul 26 07:08:52 2026 ] 	Epoch: 12, Batch(50/491) done. Loss: 0.20356247  lr:0.000100
+[ Sun Jul 26 07:09:38 2026 ] 	Epoch: 12, Batch(100/491) done. Loss: 0.31376323  lr:0.000100
+[ Sun Jul 26 07:10:28 2026 ] 	Epoch: 12, Batch(150/491) done. Loss: 0.38828135  lr:0.000100
+[ Sun Jul 26 07:11:15 2026 ] 	Epoch: 12, Batch(200/491) done. Loss: 1.64265728  lr:0.000100
+[ Sun Jul 26 07:12:03 2026 ] 	Epoch: 12, Batch(250/491) done. Loss: 0.69139153  lr:0.000100
+[ Sun Jul 26 07:12:55 2026 ] 	Epoch: 12, Batch(300/491) done. Loss: 3.22986770  lr:0.000100
+[ Sun Jul 26 07:13:43 2026 ] 	Epoch: 12, Batch(350/491) done. Loss: 2.29378939  lr:0.000100
+[ Sun Jul 26 07:14:34 2026 ] 	Epoch: 12, Batch(400/491) done. Loss: 0.34667206  lr:0.000100
+[ Sun Jul 26 07:15:21 2026 ] 	Epoch: 12, Batch(450/491) done. Loss: 0.45928395  lr:0.000100
+[ Sun Jul 26 07:16:03 2026 ] 	Mean training loss: 0.8685968062.
+[ Sun Jul 26 07:20:23 2026 ] Dev WER: 18.71%
+[ Sun Jul 26 07:20:26 2026 ] 	Epoch: 13, Batch(0/491) done. Loss: 0.62558025  lr:0.000100
+[ Sun Jul 26 07:21:13 2026 ] 	Epoch: 13, Batch(50/491) done. Loss: 1.23608124  lr:0.000100
+[ Sun Jul 26 07:22:03 2026 ] 	Epoch: 13, Batch(100/491) done. Loss: 0.19139990  lr:0.000100
+[ Sun Jul 26 07:22:51 2026 ] 	Epoch: 13, Batch(150/491) done. Loss: 1.22865427  lr:0.000100
+[ Sun Jul 26 07:23:40 2026 ] 	Epoch: 13, Batch(200/491) done. Loss: 0.09604774  lr:0.000100
+[ Sun Jul 26 07:24:27 2026 ] 	Epoch: 13, Batch(250/491) done. Loss: 1.17449868  lr:0.000100
+[ Sun Jul 26 07:25:13 2026 ] 	Epoch: 13, Batch(300/491) done. Loss: 0.14981440  lr:0.000100
+[ Sun Jul 26 07:26:01 2026 ] 	Epoch: 13, Batch(350/491) done. Loss: 0.30023584  lr:0.000100
+[ Sun Jul 26 07:26:50 2026 ] 	Epoch: 13, Batch(400/491) done. Loss: 0.15960065  lr:0.000100
+[ Sun Jul 26 07:27:41 2026 ] 	Epoch: 13, Batch(450/491) done. Loss: 0.18338344  lr:0.000100
+[ Sun Jul 26 07:28:18 2026 ] 	Mean training loss: 0.4615312915.
+[ Sun Jul 26 07:32:47 2026 ] Dev WER: 21.94%
+[ Sun Jul 26 07:32:50 2026 ] 	Epoch: 14, Batch(0/491) done. Loss: 0.04171951  lr:0.000100
+[ Sun Jul 26 07:33:37 2026 ] 	Epoch: 14, Batch(50/491) done. Loss: 0.15961632  lr:0.000100
+[ Sun Jul 26 07:34:24 2026 ] 	Epoch: 14, Batch(100/491) done. Loss: 0.55583429  lr:0.000100
+[ Sun Jul 26 07:35:12 2026 ] 	Epoch: 14, Batch(150/491) done. Loss: 0.09566126  lr:0.000100
+[ Sun Jul 26 07:35:59 2026 ] 	Epoch: 14, Batch(200/491) done. Loss: 0.09723682  lr:0.000100
+[ Sun Jul 26 07:36:47 2026 ] 	Epoch: 14, Batch(250/491) done. Loss: 0.72049099  lr:0.000100
+[ Sun Jul 26 07:37:36 2026 ] 	Epoch: 14, Batch(300/491) done. Loss: 0.12544340  lr:0.000100
+[ Sun Jul 26 07:38:25 2026 ] 	Epoch: 14, Batch(350/491) done. Loss: 0.12764099  lr:0.000100
+[ Sun Jul 26 07:39:15 2026 ] 	Epoch: 14, Batch(400/491) done. Loss: 0.03077900  lr:0.000100
+[ Sun Jul 26 07:40:03 2026 ] 	Epoch: 14, Batch(450/491) done. Loss: 0.47358465  lr:0.000100
+[ Sun Jul 26 07:40:40 2026 ] 	Mean training loss: 0.4636235352.
+[ Sun Jul 26 07:45:07 2026 ] Dev WER: 24.52%
+[ Sun Jul 26 07:45:12 2026 ] 	Epoch: 15, Batch(0/491) done. Loss: 1.65861380  lr:0.000100
+[ Sun Jul 26 07:46:02 2026 ] 	Epoch: 15, Batch(50/491) done. Loss: 0.05116241  lr:0.000100
+[ Sun Jul 26 07:46:56 2026 ] 	Epoch: 15, Batch(100/491) done. Loss: 0.03412393  lr:0.000100
+[ Sun Jul 26 07:47:49 2026 ] 	Epoch: 15, Batch(150/491) done. Loss: 0.09443701  lr:0.000100
+[ Sun Jul 26 07:48:36 2026 ] 	Epoch: 15, Batch(200/491) done. Loss: 0.06487269  lr:0.000100
+[ Sun Jul 26 07:49:24 2026 ] 	Epoch: 15, Batch(250/491) done. Loss: 0.42591053  lr:0.000100
+[ Sun Jul 26 07:50:12 2026 ] 	Epoch: 15, Batch(300/491) done. Loss: 0.04935420  lr:0.000100
+[ Sun Jul 26 07:51:01 2026 ] 	Epoch: 15, Batch(350/491) done. Loss: 2.46000385  lr:0.000100
+[ Sun Jul 26 07:51:49 2026 ] 	Epoch: 15, Batch(400/491) done. Loss: 0.10176673  lr:0.000100
+[ Sun Jul 26 07:52:43 2026 ] 	Epoch: 15, Batch(450/491) done. Loss: 0.07489830  lr:0.000100
+[ Sun Jul 26 07:53:20 2026 ] 	Mean training loss: 0.3912878281.
+[ Sun Jul 26 07:57:54 2026 ] Dev WER: 19.78%
+[ Sun Jul 26 07:57:57 2026 ] 	Epoch: 16, Batch(0/491) done. Loss: 0.09712267  lr:0.000100
+[ Sun Jul 26 07:58:47 2026 ] 	Epoch: 16, Batch(50/491) done. Loss: 0.17863098  lr:0.000100
+[ Sun Jul 26 07:59:38 2026 ] 	Epoch: 16, Batch(100/491) done. Loss: 0.11580333  lr:0.000100
+[ Sun Jul 26 08:00:35 2026 ] 	Epoch: 16, Batch(150/491) done. Loss: 0.16272920  lr:0.000100
+[ Sun Jul 26 08:01:27 2026 ] 	Epoch: 16, Batch(200/491) done. Loss: 4.61211920  lr:0.000100
+[ Sun Jul 26 08:02:16 2026 ] 	Epoch: 16, Batch(250/491) done. Loss: 0.14285806  lr:0.000100
+[ Sun Jul 26 08:03:05 2026 ] 	Epoch: 16, Batch(300/491) done. Loss: 0.41390705  lr:0.000100
+[ Sun Jul 26 08:04:02 2026 ] 	Epoch: 16, Batch(350/491) done. Loss: 1.07961309  lr:0.000100
+[ Sun Jul 26 08:04:49 2026 ] 	Epoch: 16, Batch(400/491) done. Loss: 0.16254888  lr:0.000100
+[ Sun Jul 26 08:05:38 2026 ] 	Epoch: 16, Batch(450/491) done. Loss: 0.07387376  lr:0.000100
+[ Sun Jul 26 08:06:24 2026 ] 	Mean training loss: 0.4632982423.
+[ Sun Jul 26 08:10:52 2026 ] Dev WER: 17.42%
+[ Sun Jul 26 08:10:56 2026 ] 	Epoch: 17, Batch(0/491) done. Loss: 0.09138446  lr:0.000100
+[ Sun Jul 26 08:11:44 2026 ] 	Epoch: 17, Batch(50/491) done. Loss: 0.04163807  lr:0.000100
+[ Sun Jul 26 08:12:32 2026 ] 	Epoch: 17, Batch(100/491) done. Loss: 0.11791600  lr:0.000100
+[ Sun Jul 26 08:13:20 2026 ] 	Epoch: 17, Batch(150/491) done. Loss: 0.10368316  lr:0.000100
+[ Sun Jul 26 08:14:08 2026 ] 	Epoch: 17, Batch(200/491) done. Loss: 0.04469298  lr:0.000100
+[ Sun Jul 26 08:15:01 2026 ] 	Epoch: 17, Batch(250/491) done. Loss: 1.46473670  lr:0.000100
+[ Sun Jul 26 08:15:49 2026 ] 	Epoch: 17, Batch(300/491) done. Loss: 0.02540502  lr:0.000100
+[ Sun Jul 26 08:16:39 2026 ] 	Epoch: 17, Batch(350/491) done. Loss: 0.19439870  lr:0.000100
+[ Sun Jul 26 08:17:28 2026 ] 	Epoch: 17, Batch(400/491) done. Loss: 0.02474162  lr:0.000100
+[ Sun Jul 26 08:18:14 2026 ] 	Epoch: 17, Batch(450/491) done. Loss: 0.10262652  lr:0.000100
+[ Sun Jul 26 08:18:52 2026 ] 	Mean training loss: 0.3879638302.
+[ Sun Jul 26 08:23:12 2026 ] Dev WER: 18.92%
+[ Sun Jul 26 08:23:15 2026 ] 	Epoch: 18, Batch(0/491) done. Loss: 0.05422755  lr:0.000100
+[ Sun Jul 26 08:24:05 2026 ] 	Epoch: 18, Batch(50/491) done. Loss: 0.03596136  lr:0.000100
+[ Sun Jul 26 08:24:52 2026 ] 	Epoch: 18, Batch(100/491) done. Loss: 0.03367456  lr:0.000100
+[ Sun Jul 26 08:25:58 2026 ] 	Epoch: 18, Batch(150/491) done. Loss: 0.02848783  lr:0.000100
+[ Sun Jul 26 08:26:50 2026 ] 	Epoch: 18, Batch(200/491) done. Loss: 0.02837240  lr:0.000100
+[ Sun Jul 26 08:27:38 2026 ] 	Epoch: 18, Batch(250/491) done. Loss: 0.02415817  lr:0.000100
+[ Sun Jul 26 08:28:29 2026 ] 	Epoch: 18, Batch(300/491) done. Loss: 0.08633198  lr:0.000100
+[ Sun Jul 26 08:29:19 2026 ] 	Epoch: 18, Batch(350/491) done. Loss: 0.02992563  lr:0.000100
+[ Sun Jul 26 08:30:11 2026 ] 	Epoch: 18, Batch(400/491) done. Loss: 0.03182212  lr:0.000100
+[ Sun Jul 26 08:31:21 2026 ] 	Epoch: 18, Batch(450/491) done. Loss: 0.57547843  lr:0.000100
+[ Sun Jul 26 08:32:07 2026 ] 	Mean training loss: 0.2251239175.
+[ Sun Jul 26 08:36:37 2026 ] Dev WER: 18.06%
+[ Sun Jul 26 08:36:48 2026 ] 	Epoch: 19, Batch(0/491) done. Loss: 0.01640350  lr:0.000100
+[ Sun Jul 26 08:37:44 2026 ] 	Epoch: 19, Batch(50/491) done. Loss: 0.64027202  lr:0.000100
+[ Sun Jul 26 08:38:33 2026 ] 	Epoch: 19, Batch(100/491) done. Loss: 0.02393964  lr:0.000100
+[ Sun Jul 26 08:39:20 2026 ] 	Epoch: 19, Batch(150/491) done. Loss: 5.76050520  lr:0.000100
+[ Sun Jul 26 08:40:10 2026 ] 	Epoch: 19, Batch(200/491) done. Loss: 0.11188087  lr:0.000100
+[ Sun Jul 26 08:40:58 2026 ] 	Epoch: 19, Batch(250/491) done. Loss: 0.06201421  lr:0.000100
+[ Sun Jul 26 08:41:46 2026 ] 	Epoch: 19, Batch(300/491) done. Loss: 0.44084331  lr:0.000100
+[ Sun Jul 26 08:42:38 2026 ] 	Epoch: 19, Batch(350/491) done. Loss: 0.05382063  lr:0.000100
+[ Sun Jul 26 08:43:33 2026 ] 	Epoch: 19, Batch(400/491) done. Loss: 0.91081411  lr:0.000100
+[ Sun Jul 26 08:44:22 2026 ] 	Epoch: 19, Batch(450/491) done. Loss: 0.01484334  lr:0.000100
+[ Sun Jul 26 08:45:01 2026 ] 	Mean training loss: 0.1993365742.
+[ Sun Jul 26 08:49:28 2026 ] Dev WER: 21.29%
+[ Sun Jul 26 08:49:31 2026 ] 	Epoch: 20, Batch(0/491) done. Loss: 0.49859762  lr:0.000020
+[ Sun Jul 26 08:50:25 2026 ] 	Epoch: 20, Batch(50/491) done. Loss: 0.01162596  lr:0.000020
+[ Sun Jul 26 08:51:24 2026 ] 	Epoch: 20, Batch(100/491) done. Loss: 0.79836422  lr:0.000020
+[ Sun Jul 26 08:52:18 2026 ] 	Epoch: 20, Batch(150/491) done. Loss: 0.01822633  lr:0.000020
+[ Sun Jul 26 08:53:07 2026 ] 	Epoch: 20, Batch(200/491) done. Loss: 0.52720243  lr:0.000020
+[ Sun Jul 26 08:53:56 2026 ] 	Epoch: 20, Batch(250/491) done. Loss: 0.01347917  lr:0.000020
+[ Sun Jul 26 08:54:43 2026 ] 	Epoch: 20, Batch(300/491) done. Loss: 0.03621998  lr:0.000020
+[ Sun Jul 26 08:55:31 2026 ] 	Epoch: 20, Batch(350/491) done. Loss: 0.05599761  lr:0.000020
+[ Sun Jul 26 08:56:20 2026 ] 	Epoch: 20, Batch(400/491) done. Loss: 0.20708649  lr:0.000020
+[ Sun Jul 26 08:57:11 2026 ] 	Epoch: 20, Batch(450/491) done. Loss: 0.01351186  lr:0.000020
+[ Sun Jul 26 08:57:50 2026 ] 	Mean training loss: 0.1239920865.
+[ Sun Jul 26 09:02:18 2026 ] Dev WER: 14.41%
+[ Sun Jul 26 09:02:26 2026 ] 	Epoch: 21, Batch(0/491) done. Loss: 0.02198949  lr:0.000020
+[ Sun Jul 26 09:03:15 2026 ] 	Epoch: 21, Batch(50/491) done. Loss: 0.03354689  lr:0.000020
+[ Sun Jul 26 09:04:10 2026 ] 	Epoch: 21, Batch(100/491) done. Loss: 0.13372084  lr:0.000020
+[ Sun Jul 26 09:04:57 2026 ] 	Epoch: 21, Batch(150/491) done. Loss: 0.02553305  lr:0.000020
+[ Sun Jul 26 09:05:46 2026 ] 	Epoch: 21, Batch(200/491) done. Loss: 0.01701955  lr:0.000020
+[ Sun Jul 26 09:06:33 2026 ] 	Epoch: 21, Batch(250/491) done. Loss: 0.09306318  lr:0.000020
+[ Sun Jul 26 09:07:30 2026 ] 	Epoch: 21, Batch(300/491) done. Loss: 0.01473880  lr:0.000020
+[ Sun Jul 26 09:08:26 2026 ] 	Epoch: 21, Batch(350/491) done. Loss: 0.02356193  lr:0.000020
+[ Sun Jul 26 09:09:15 2026 ] 	Epoch: 21, Batch(400/491) done. Loss: 0.04614693  lr:0.000020
+[ Sun Jul 26 09:10:05 2026 ] 	Epoch: 21, Batch(450/491) done. Loss: 0.02739385  lr:0.000020
+[ Sun Jul 26 09:10:45 2026 ] 	Mean training loss: 0.1071082653.
+[ Sun Jul 26 09:15:47 2026 ] Dev WER: 11.18%
+[ Sun Jul 26 09:15:51 2026 ] 	Epoch: 22, Batch(0/491) done. Loss: 0.00914878  lr:0.000020
+[ Sun Jul 26 09:16:41 2026 ] 	Epoch: 22, Batch(50/491) done. Loss: 0.04476976  lr:0.000020
+[ Sun Jul 26 09:17:29 2026 ] 	Epoch: 22, Batch(100/491) done. Loss: 0.03770912  lr:0.000020
+[ Sun Jul 26 09:18:19 2026 ] 	Epoch: 22, Batch(150/491) done. Loss: 0.12235972  lr:0.000020
+[ Sun Jul 26 09:19:26 2026 ] 	Epoch: 22, Batch(200/491) done. Loss: 0.03429279  lr:0.000020
+[ Sun Jul 26 09:20:29 2026 ] 	Epoch: 22, Batch(250/491) done. Loss: 0.01629872  lr:0.000020
+[ Sun Jul 26 09:21:19 2026 ] 	Epoch: 22, Batch(300/491) done. Loss: 0.03838159  lr:0.000020
+[ Sun Jul 26 09:22:07 2026 ] 	Epoch: 22, Batch(350/491) done. Loss: 0.00605058  lr:0.000020
+[ Sun Jul 26 09:23:10 2026 ] 	Epoch: 22, Batch(400/491) done. Loss: 0.02107361  lr:0.000020
+[ Sun Jul 26 09:23:58 2026 ] 	Epoch: 22, Batch(450/491) done. Loss: 0.02097603  lr:0.000020
+[ Sun Jul 26 09:24:36 2026 ] 	Mean training loss: 0.0940545663.
+[ Sun Jul 26 09:29:20 2026 ] Dev WER: 08.60%
+[ Sun Jul 26 09:29:23 2026 ] 	Epoch: 23, Batch(0/491) done. Loss: 0.00995727  lr:0.000020
+[ Sun Jul 26 09:30:11 2026 ] 	Epoch: 23, Batch(50/491) done. Loss: 0.01118280  lr:0.000020
+[ Sun Jul 26 09:30:59 2026 ] 	Epoch: 23, Batch(100/491) done. Loss: 0.01631882  lr:0.000020
+[ Sun Jul 26 09:31:48 2026 ] 	Epoch: 23, Batch(150/491) done. Loss: 0.01375069  lr:0.000020
+[ Sun Jul 26 09:32:34 2026 ] 	Epoch: 23, Batch(200/491) done. Loss: 0.01456134  lr:0.000020
+[ Sun Jul 26 09:33:25 2026 ] 	Epoch: 23, Batch(250/491) done. Loss: 0.03375845  lr:0.000020
+[ Sun Jul 26 09:34:13 2026 ] 	Epoch: 23, Batch(300/491) done. Loss: 0.02240970  lr:0.000020
+[ Sun Jul 26 09:35:02 2026 ] 	Epoch: 23, Batch(350/491) done. Loss: 0.02091391  lr:0.000020
+[ Sun Jul 26 09:35:51 2026 ] 	Epoch: 23, Batch(400/491) done. Loss: 0.01172439  lr:0.000020
+[ Sun Jul 26 09:36:40 2026 ] 	Epoch: 23, Batch(450/491) done. Loss: 0.02558745  lr:0.000020
+[ Sun Jul 26 09:37:18 2026 ] 	Mean training loss: 0.0918092765.
+[ Sun Jul 26 09:42:04 2026 ] Dev WER: 08.39%
+[ Sun Jul 26 09:42:07 2026 ] 	Epoch: 24, Batch(0/491) done. Loss: 0.00981997  lr:0.000020
+[ Sun Jul 26 09:42:59 2026 ] 	Epoch: 24, Batch(50/491) done. Loss: 0.45110738  lr:0.000020
+[ Sun Jul 26 09:43:47 2026 ] 	Epoch: 24, Batch(100/491) done. Loss: 0.00785587  lr:0.000020
+[ Sun Jul 26 09:44:39 2026 ] 	Epoch: 24, Batch(150/491) done. Loss: 0.02716017  lr:0.000020
+[ Sun Jul 26 09:45:38 2026 ] 	Epoch: 24, Batch(200/491) done. Loss: 0.02969528  lr:0.000020
+[ Sun Jul 26 09:46:26 2026 ] 	Epoch: 24, Batch(250/491) done. Loss: 0.01147201  lr:0.000020
+[ Sun Jul 26 09:47:16 2026 ] 	Epoch: 24, Batch(300/491) done. Loss: 0.01332076  lr:0.000020
+[ Sun Jul 26 09:48:03 2026 ] 	Epoch: 24, Batch(350/491) done. Loss: 0.03426922  lr:0.000020
+[ Sun Jul 26 09:48:52 2026 ] 	Epoch: 24, Batch(400/491) done. Loss: 0.02258152  lr:0.000020
+[ Sun Jul 26 09:49:40 2026 ] 	Epoch: 24, Batch(450/491) done. Loss: 0.18852516  lr:0.000020
+[ Sun Jul 26 09:50:19 2026 ] 	Mean training loss: 0.0837531130.
+[ Sun Jul 26 09:55:07 2026 ] Dev WER: 10.97%
+[ Sun Jul 26 09:55:10 2026 ] 	Epoch: 25, Batch(0/491) done. Loss: 0.08500186  lr:0.000020
+[ Sun Jul 26 09:56:09 2026 ] 	Epoch: 25, Batch(50/491) done. Loss: 0.02202147  lr:0.000020
+[ Sun Jul 26 09:56:59 2026 ] 	Epoch: 25, Batch(100/491) done. Loss: 0.53001505  lr:0.000020
+[ Sun Jul 26 09:57:49 2026 ] 	Epoch: 25, Batch(150/491) done. Loss: 0.02661836  lr:0.000020
+[ Sun Jul 26 09:58:39 2026 ] 	Epoch: 25, Batch(200/491) done. Loss: 0.05308870  lr:0.000020
+[ Sun Jul 26 09:59:29 2026 ] 	Epoch: 25, Batch(250/491) done. Loss: 0.01715710  lr:0.000020
+[ Sun Jul 26 10:00:18 2026 ] 	Epoch: 25, Batch(300/491) done. Loss: 0.02424576  lr:0.000020
+[ Sun Jul 26 10:01:12 2026 ] 	Epoch: 25, Batch(350/491) done. Loss: 0.01666430  lr:0.000020
+[ Sun Jul 26 10:02:00 2026 ] 	Epoch: 25, Batch(400/491) done. Loss: 0.01637895  lr:0.000020
+[ Sun Jul 26 10:02:49 2026 ] 	Epoch: 25, Batch(450/491) done. Loss: 0.01254141  lr:0.000020
+[ Sun Jul 26 10:03:25 2026 ] 	Mean training loss: 0.0927707551.
+[ Sun Jul 26 10:08:27 2026 ] Dev WER: 09.03%
+[ Sun Jul 26 10:08:33 2026 ] 	Epoch: 26, Batch(0/491) done. Loss: 0.34493884  lr:0.000020
+[ Sun Jul 26 10:09:22 2026 ] 	Epoch: 26, Batch(50/491) done. Loss: 0.01025895  lr:0.000020
+[ Sun Jul 26 10:10:11 2026 ] 	Epoch: 26, Batch(100/491) done. Loss: 0.02564672  lr:0.000020
+[ Sun Jul 26 10:11:01 2026 ] 	Epoch: 26, Batch(150/491) done. Loss: 0.02044216  lr:0.000020
+[ Sun Jul 26 10:11:57 2026 ] 	Epoch: 26, Batch(200/491) done. Loss: 0.01632627  lr:0.000020
+[ Sun Jul 26 10:12:47 2026 ] 	Epoch: 26, Batch(250/491) done. Loss: 0.18662454  lr:0.000020
+[ Sun Jul 26 10:13:34 2026 ] 	Epoch: 26, Batch(300/491) done. Loss: 0.18485279  lr:0.000020
+[ Sun Jul 26 10:14:21 2026 ] 	Epoch: 26, Batch(350/491) done. Loss: 0.00876193  lr:0.000020
+[ Sun Jul 26 10:15:13 2026 ] 	Epoch: 26, Batch(400/491) done. Loss: 0.29487878  lr:0.000020
+[ Sun Jul 26 10:16:01 2026 ] 	Epoch: 26, Batch(450/491) done. Loss: 0.01134231  lr:0.000020
+[ Sun Jul 26 10:16:40 2026 ] 	Mean training loss: 0.0618969925.
+[ Sun Jul 26 10:21:41 2026 ] Dev WER: 07.74%
+[ Sun Jul 26 10:21:43 2026 ] 	Epoch: 27, Batch(0/491) done. Loss: 0.46673083  lr:0.000020
+[ Sun Jul 26 10:22:33 2026 ] 	Epoch: 27, Batch(50/491) done. Loss: 0.16085769  lr:0.000020
+[ Sun Jul 26 10:23:20 2026 ] 	Epoch: 27, Batch(100/491) done. Loss: 0.01798870  lr:0.000020
+[ Sun Jul 26 10:24:08 2026 ] 	Epoch: 27, Batch(150/491) done. Loss: 0.01966386  lr:0.000020
+[ Sun Jul 26 10:24:57 2026 ] 	Epoch: 27, Batch(200/491) done. Loss: 0.00474356  lr:0.000020
+[ Sun Jul 26 10:25:44 2026 ] 	Epoch: 27, Batch(250/491) done. Loss: 0.00691313  lr:0.000020
+[ Sun Jul 26 10:26:34 2026 ] 	Epoch: 27, Batch(300/491) done. Loss: 0.01973724  lr:0.000020
+[ Sun Jul 26 10:27:24 2026 ] 	Epoch: 27, Batch(350/491) done. Loss: 0.05026836  lr:0.000020
+[ Sun Jul 26 10:28:13 2026 ] 	Epoch: 27, Batch(400/491) done. Loss: 0.01457661  lr:0.000020
+[ Sun Jul 26 10:29:02 2026 ] 	Epoch: 27, Batch(450/491) done. Loss: 0.84771085  lr:0.000020
+[ Sun Jul 26 10:29:41 2026 ] 	Mean training loss: 0.0530888593.
+[ Sun Jul 26 10:34:46 2026 ] Dev WER: 07.74%
+[ Sun Jul 26 10:34:49 2026 ] 	Epoch: 28, Batch(0/491) done. Loss: 0.01198342  lr:0.000020
+[ Sun Jul 26 10:35:39 2026 ] 	Epoch: 28, Batch(50/491) done. Loss: 0.22089842  lr:0.000020
+[ Sun Jul 26 10:36:25 2026 ] 	Epoch: 28, Batch(100/491) done. Loss: 0.01400196  lr:0.000020
+[ Sun Jul 26 10:37:14 2026 ] 	Epoch: 28, Batch(150/491) done. Loss: 0.01325509  lr:0.000020
+[ Sun Jul 26 10:38:02 2026 ] 	Epoch: 28, Batch(200/491) done. Loss: 0.02143260  lr:0.000020
+[ Sun Jul 26 10:39:11 2026 ] 	Epoch: 28, Batch(250/491) done. Loss: 0.00530179  lr:0.000020
+[ Sun Jul 26 10:40:00 2026 ] 	Epoch: 28, Batch(300/491) done. Loss: 0.23722884  lr:0.000020
+[ Sun Jul 26 10:40:47 2026 ] 	Epoch: 28, Batch(350/491) done. Loss: 0.00736753  lr:0.000020
+[ Sun Jul 26 10:41:36 2026 ] 	Epoch: 28, Batch(400/491) done. Loss: 0.00900759  lr:0.000020
+[ Sun Jul 26 10:42:28 2026 ] 	Epoch: 28, Batch(450/491) done. Loss: 0.01095650  lr:0.000020
+[ Sun Jul 26 10:43:11 2026 ] 	Mean training loss: 0.0381129083.
+[ Sun Jul 26 10:48:11 2026 ] Dev WER: 06.67%
+[ Sun Jul 26 10:48:16 2026 ] 	Epoch: 29, Batch(0/491) done. Loss: 0.00847562  lr:0.000020
+[ Sun Jul 26 10:49:08 2026 ] 	Epoch: 29, Batch(50/491) done. Loss: 0.00714483  lr:0.000020
+[ Sun Jul 26 10:49:56 2026 ] 	Epoch: 29, Batch(100/491) done. Loss: 0.01879154  lr:0.000020
+[ Sun Jul 26 10:50:41 2026 ] 	Epoch: 29, Batch(150/491) done. Loss: 0.00790723  lr:0.000020
+[ Sun Jul 26 10:51:42 2026 ] 	Epoch: 29, Batch(200/491) done. Loss: 0.01035407  lr:0.000020
+[ Sun Jul 26 10:52:34 2026 ] 	Epoch: 29, Batch(250/491) done. Loss: 0.01590994  lr:0.000020
+[ Sun Jul 26 10:53:21 2026 ] 	Epoch: 29, Batch(300/491) done. Loss: 0.01274635  lr:0.000020
+[ Sun Jul 26 10:54:09 2026 ] 	Epoch: 29, Batch(350/491) done. Loss: 0.01121231  lr:0.000020
+[ Sun Jul 26 10:54:57 2026 ] 	Epoch: 29, Batch(400/491) done. Loss: 0.01559203  lr:0.000020
+[ Sun Jul 26 10:55:46 2026 ] 	Epoch: 29, Batch(450/491) done. Loss: 0.01989799  lr:0.000020
+[ Sun Jul 26 10:56:32 2026 ] 	Mean training loss: 0.0340321326.
+[ Sun Jul 26 11:01:26 2026 ] Dev WER: 03.66%
+[ Sun Jul 26 11:01:30 2026 ] 	Epoch: 30, Batch(0/491) done. Loss: 0.01007063  lr:0.000020
+[ Sun Jul 26 11:02:18 2026 ] 	Epoch: 30, Batch(50/491) done. Loss: 0.00577263  lr:0.000020
+[ Sun Jul 26 11:03:09 2026 ] 	Epoch: 30, Batch(100/491) done. Loss: 0.00461541  lr:0.000020
+[ Sun Jul 26 11:03:57 2026 ] 	Epoch: 30, Batch(150/491) done. Loss: 0.00808133  lr:0.000020
+[ Sun Jul 26 11:04:44 2026 ] 	Epoch: 30, Batch(200/491) done. Loss: 0.00607870  lr:0.000020
+[ Sun Jul 26 11:05:30 2026 ] 	Epoch: 30, Batch(250/491) done. Loss: 0.02794995  lr:0.000020
+[ Sun Jul 26 11:06:20 2026 ] 	Epoch: 30, Batch(300/491) done. Loss: 0.01335437  lr:0.000020
+[ Sun Jul 26 11:07:11 2026 ] 	Epoch: 30, Batch(350/491) done. Loss: 0.12588543  lr:0.000020
+[ Sun Jul 26 11:08:02 2026 ] 	Epoch: 30, Batch(400/491) done. Loss: 0.07094032  lr:0.000020
+[ Sun Jul 26 11:08:51 2026 ] 	Epoch: 30, Batch(450/491) done. Loss: 0.09466947  lr:0.000020
+[ Sun Jul 26 11:09:30 2026 ] 	Mean training loss: 0.0371029466.
+[ Sun Jul 26 11:14:15 2026 ] Dev WER: 02.80%
+[ Sun Jul 26 11:14:19 2026 ] 	Epoch: 31, Batch(0/491) done. Loss: 0.01420460  lr:0.000020
+[ Sun Jul 26 11:15:14 2026 ] 	Epoch: 31, Batch(50/491) done. Loss: 0.01521868  lr:0.000020
+[ Sun Jul 26 11:16:04 2026 ] 	Epoch: 31, Batch(100/491) done. Loss: 0.00918379  lr:0.000020
+[ Sun Jul 26 11:16:54 2026 ] 	Epoch: 31, Batch(150/491) done. Loss: 0.00603280  lr:0.000020
+[ Sun Jul 26 11:17:43 2026 ] 	Epoch: 31, Batch(200/491) done. Loss: 0.01173203  lr:0.000020
+[ Sun Jul 26 11:18:34 2026 ] 	Epoch: 31, Batch(250/491) done. Loss: 0.03220113  lr:0.000020
+[ Sun Jul 26 11:19:31 2026 ] 	Epoch: 31, Batch(300/491) done. Loss: 0.06600385  lr:0.000020
+[ Sun Jul 26 11:20:21 2026 ] 	Epoch: 31, Batch(350/491) done. Loss: 0.00888461  lr:0.000020
+[ Sun Jul 26 11:21:13 2026 ] 	Epoch: 31, Batch(400/491) done. Loss: 1.57321703  lr:0.000020
+[ Sun Jul 26 11:22:01 2026 ] 	Epoch: 31, Batch(450/491) done. Loss: 0.02767999  lr:0.000020
+[ Sun Jul 26 11:22:42 2026 ] 	Mean training loss: 0.0365532960.
+[ Sun Jul 26 11:27:18 2026 ] Dev WER: 03.01%
+[ Sun Jul 26 11:27:21 2026 ] 	Epoch: 32, Batch(0/491) done. Loss: 0.00896242  lr:0.000020
+[ Sun Jul 26 11:28:08 2026 ] 	Epoch: 32, Batch(50/491) done. Loss: 0.00971073  lr:0.000020
+[ Sun Jul 26 11:28:57 2026 ] 	Epoch: 32, Batch(100/491) done. Loss: 0.01866807  lr:0.000020
+[ Sun Jul 26 11:29:46 2026 ] 	Epoch: 32, Batch(150/491) done. Loss: 0.01382312  lr:0.000020
+[ Sun Jul 26 11:30:38 2026 ] 	Epoch: 32, Batch(200/491) done. Loss: 0.01109608  lr:0.000020
+[ Sun Jul 26 11:31:29 2026 ] 	Epoch: 32, Batch(250/491) done. Loss: 0.00508034  lr:0.000020
+[ Sun Jul 26 11:32:17 2026 ] 	Epoch: 32, Batch(300/491) done. Loss: 0.00755653  lr:0.000020
+[ Sun Jul 26 11:33:10 2026 ] 	Epoch: 32, Batch(350/491) done. Loss: 0.00706811  lr:0.000020
+[ Sun Jul 26 11:34:05 2026 ] 	Epoch: 32, Batch(400/491) done. Loss: 0.01024310  lr:0.000020
+[ Sun Jul 26 11:35:03 2026 ] 	Epoch: 32, Batch(450/491) done. Loss: 0.01526352  lr:0.000020
+[ Sun Jul 26 11:35:53 2026 ] 	Mean training loss: 0.0246567150.
+[ Sun Jul 26 11:40:44 2026 ] Dev WER: 05.16%
+[ Sun Jul 26 11:40:48 2026 ] 	Epoch: 33, Batch(0/491) done. Loss: 0.00991694  lr:0.000020
+[ Sun Jul 26 11:41:36 2026 ] 	Epoch: 33, Batch(50/491) done. Loss: 0.00633157  lr:0.000020
+[ Sun Jul 26 11:42:25 2026 ] 	Epoch: 33, Batch(100/491) done. Loss: 0.03769213  lr:0.000020
+[ Sun Jul 26 11:43:15 2026 ] 	Epoch: 33, Batch(150/491) done. Loss: 0.00487264  lr:0.000020
+[ Sun Jul 26 11:44:02 2026 ] 	Epoch: 33, Batch(200/491) done. Loss: 0.01224667  lr:0.000020
+[ Sun Jul 26 11:44:53 2026 ] 	Epoch: 33, Batch(250/491) done. Loss: 0.00480095  lr:0.000020
+[ Sun Jul 26 11:45:41 2026 ] 	Epoch: 33, Batch(300/491) done. Loss: 0.01098588  lr:0.000020
+[ Sun Jul 26 11:46:32 2026 ] 	Epoch: 33, Batch(350/491) done. Loss: 0.00817330  lr:0.000020
+[ Sun Jul 26 11:47:24 2026 ] 	Epoch: 33, Batch(400/491) done. Loss: 0.00769274  lr:0.000020
+[ Sun Jul 26 11:48:13 2026 ] 	Epoch: 33, Batch(450/491) done. Loss: 0.01027606  lr:0.000020
+[ Sun Jul 26 11:48:50 2026 ] 	Mean training loss: 0.0266418139.
+[ Sun Jul 26 11:53:29 2026 ] Dev WER: 03.87%
+[ Sun Jul 26 11:53:31 2026 ] 	Epoch: 34, Batch(0/491) done. Loss: 0.00732054  lr:0.000020
+[ Sun Jul 26 11:54:20 2026 ] 	Epoch: 34, Batch(50/491) done. Loss: 0.00377824  lr:0.000020
+[ Sun Jul 26 11:55:07 2026 ] 	Epoch: 34, Batch(100/491) done. Loss: 0.00617555  lr:0.000020
+[ Sun Jul 26 11:55:55 2026 ] 	Epoch: 34, Batch(150/491) done. Loss: 0.01523269  lr:0.000020
+[ Sun Jul 26 11:56:45 2026 ] 	Epoch: 34, Batch(200/491) done. Loss: 0.44595200  lr:0.000020
+[ Sun Jul 26 11:57:32 2026 ] 	Epoch: 34, Batch(250/491) done. Loss: 0.00228640  lr:0.000020
+[ Sun Jul 26 11:58:22 2026 ] 	Epoch: 34, Batch(300/491) done. Loss: 0.03930141  lr:0.000020
+[ Sun Jul 26 11:59:11 2026 ] 	Epoch: 34, Batch(350/491) done. Loss: 0.00600244  lr:0.000020
+[ Sun Jul 26 12:00:03 2026 ] 	Epoch: 34, Batch(400/491) done. Loss: 0.01007983  lr:0.000020
+[ Sun Jul 26 12:00:52 2026 ] 	Epoch: 34, Batch(450/491) done. Loss: 0.04708185  lr:0.000020
+[ Sun Jul 26 12:01:31 2026 ] 	Mean training loss: 0.0202856429.
+[ Sun Jul 26 12:06:03 2026 ] Dev WER: 03.23%
+[ Sun Jul 26 12:06:08 2026 ] 	Epoch: 35, Batch(0/491) done. Loss: 0.01604293  lr:0.000004
+[ Sun Jul 26 12:06:56 2026 ] 	Epoch: 35, Batch(50/491) done. Loss: 0.00627179  lr:0.000004
+[ Sun Jul 26 12:07:42 2026 ] 	Epoch: 35, Batch(100/491) done. Loss: 0.00738657  lr:0.000004
+[ Sun Jul 26 12:08:29 2026 ] 	Epoch: 35, Batch(150/491) done. Loss: 0.00435400  lr:0.000004
+[ Sun Jul 26 12:09:17 2026 ] 	Epoch: 35, Batch(200/491) done. Loss: 0.01228029  lr:0.000004
+[ Sun Jul 26 12:10:06 2026 ] 	Epoch: 35, Batch(250/491) done. Loss: 0.00646752  lr:0.000004
+[ Sun Jul 26 12:10:57 2026 ] 	Epoch: 35, Batch(300/491) done. Loss: 0.00596907  lr:0.000004
+[ Sun Jul 26 12:11:45 2026 ] 	Epoch: 35, Batch(350/491) done. Loss: 0.01605268  lr:0.000004
+[ Sun Jul 26 12:12:33 2026 ] 	Epoch: 35, Batch(400/491) done. Loss: 0.00484152  lr:0.000004
+[ Sun Jul 26 12:13:24 2026 ] 	Epoch: 35, Batch(450/491) done. Loss: 0.00422582  lr:0.000004
+[ Sun Jul 26 12:14:04 2026 ] 	Mean training loss: 0.0173867862.
+[ Sun Jul 26 12:18:40 2026 ] Dev WER: 04.95%
+[ Sun Jul 26 12:18:43 2026 ] 	Epoch: 36, Batch(0/491) done. Loss: 0.00453318  lr:0.000004
+[ Sun Jul 26 12:19:32 2026 ] 	Epoch: 36, Batch(50/491) done. Loss: 0.00339780  lr:0.000004
+[ Sun Jul 26 12:20:20 2026 ] 	Epoch: 36, Batch(100/491) done. Loss: 0.00559166  lr:0.000004
+[ Sun Jul 26 12:21:09 2026 ] 	Epoch: 36, Batch(150/491) done. Loss: 0.00662358  lr:0.000004
+[ Sun Jul 26 12:21:57 2026 ] 	Epoch: 36, Batch(200/491) done. Loss: 0.00899692  lr:0.000004
+[ Sun Jul 26 12:22:53 2026 ] 	Epoch: 36, Batch(250/491) done. Loss: 0.00280594  lr:0.000004
+[ Sun Jul 26 12:23:43 2026 ] 	Epoch: 36, Batch(300/491) done. Loss: 0.00496608  lr:0.000004
+[ Sun Jul 26 12:24:31 2026 ] 	Epoch: 36, Batch(350/491) done. Loss: 0.00778686  lr:0.000004
+[ Sun Jul 26 12:25:21 2026 ] 	Epoch: 36, Batch(400/491) done. Loss: 0.00347796  lr:0.000004
+[ Sun Jul 26 12:26:10 2026 ] 	Epoch: 36, Batch(450/491) done. Loss: 0.01496286  lr:0.000004
+[ Sun Jul 26 12:26:47 2026 ] 	Mean training loss: 0.0180042326.
+[ Sun Jul 26 12:31:16 2026 ] Dev WER: 03.01%
+[ Sun Jul 26 12:31:19 2026 ] 	Epoch: 37, Batch(0/491) done. Loss: 0.00365866  lr:0.000004
+[ Sun Jul 26 12:32:09 2026 ] 	Epoch: 37, Batch(50/491) done. Loss: 0.00684748  lr:0.000004
+[ Sun Jul 26 12:32:58 2026 ] 	Epoch: 37, Batch(100/491) done. Loss: 0.00679134  lr:0.000004
+[ Sun Jul 26 12:33:46 2026 ] 	Epoch: 37, Batch(150/491) done. Loss: 0.00608707  lr:0.000004
+[ Sun Jul 26 12:34:33 2026 ] 	Epoch: 37, Batch(200/491) done. Loss: 0.00393007  lr:0.000004
+[ Sun Jul 26 12:35:20 2026 ] 	Epoch: 37, Batch(250/491) done. Loss: 0.00424845  lr:0.000004
+[ Sun Jul 26 12:36:10 2026 ] 	Epoch: 37, Batch(300/491) done. Loss: 0.00483862  lr:0.000004
+[ Sun Jul 26 12:36:58 2026 ] 	Epoch: 37, Batch(350/491) done. Loss: 0.00497269  lr:0.000004
+[ Sun Jul 26 12:37:46 2026 ] 	Epoch: 37, Batch(400/491) done. Loss: 0.01005069  lr:0.000004
+[ Sun Jul 26 12:38:36 2026 ] 	Epoch: 37, Batch(450/491) done. Loss: 0.00482189  lr:0.000004
+[ Sun Jul 26 12:39:15 2026 ] 	Mean training loss: 0.0264602799.
+[ Sun Jul 26 12:44:09 2026 ] Dev WER: 02.80%
+[ Sun Jul 26 12:44:15 2026 ] 	Epoch: 38, Batch(0/491) done. Loss: 0.00337246  lr:0.000004
+[ Sun Jul 26 12:45:09 2026 ] 	Epoch: 38, Batch(50/491) done. Loss: 0.00911326  lr:0.000004
+[ Sun Jul 26 12:45:57 2026 ] 	Epoch: 38, Batch(100/491) done. Loss: 0.04030773  lr:0.000004
+[ Sun Jul 26 12:46:45 2026 ] 	Epoch: 38, Batch(150/491) done. Loss: 0.00841893  lr:0.000004
+[ Sun Jul 26 12:47:34 2026 ] 	Epoch: 38, Batch(200/491) done. Loss: 0.02591056  lr:0.000004
+[ Sun Jul 26 12:48:22 2026 ] 	Epoch: 38, Batch(250/491) done. Loss: 0.00543046  lr:0.000004
+[ Sun Jul 26 12:49:10 2026 ] 	Epoch: 38, Batch(300/491) done. Loss: 0.00474553  lr:0.000004
+[ Sun Jul 26 12:49:57 2026 ] 	Epoch: 38, Batch(350/491) done. Loss: 0.00542484  lr:0.000004
+[ Sun Jul 26 12:50:45 2026 ] 	Epoch: 38, Batch(400/491) done. Loss: 0.00848335  lr:0.000004
+[ Sun Jul 26 12:51:34 2026 ] 	Epoch: 38, Batch(450/491) done. Loss: 0.00452401  lr:0.000004
+[ Sun Jul 26 12:52:14 2026 ] 	Mean training loss: 0.0184148957.
+[ Sun Jul 26 12:56:37 2026 ] Dev WER: 02.58%
+[ Sun Jul 26 12:56:41 2026 ] 	Epoch: 39, Batch(0/491) done. Loss: 0.00992801  lr:0.000004
+[ Sun Jul 26 12:57:29 2026 ] 	Epoch: 39, Batch(50/491) done. Loss: 0.00965945  lr:0.000004
+[ Sun Jul 26 12:58:19 2026 ] 	Epoch: 39, Batch(100/491) done. Loss: 0.00290908  lr:0.000004
+[ Sun Jul 26 12:59:08 2026 ] 	Epoch: 39, Batch(150/491) done. Loss: 0.00312493  lr:0.000004
+[ Sun Jul 26 12:59:55 2026 ] 	Epoch: 39, Batch(200/491) done. Loss: 0.00965866  lr:0.000004
+[ Sun Jul 26 13:00:43 2026 ] 	Epoch: 39, Batch(250/491) done. Loss: 0.00928572  lr:0.000004
+[ Sun Jul 26 13:01:33 2026 ] 	Epoch: 39, Batch(300/491) done. Loss: 0.00725270  lr:0.000004
+[ Sun Jul 26 13:02:23 2026 ] 	Epoch: 39, Batch(350/491) done. Loss: 0.00309918  lr:0.000004
+[ Sun Jul 26 13:03:10 2026 ] 	Epoch: 39, Batch(400/491) done. Loss: 0.00302809  lr:0.000004
+[ Sun Jul 26 13:04:01 2026 ] 	Epoch: 39, Batch(450/491) done. Loss: 0.00440750  lr:0.000004
+[ Sun Jul 26 13:04:41 2026 ] 	Mean training loss: 0.0370172601.
+[ Sun Jul 26 13:09:16 2026 ] Dev WER: 04.52%
+[ Sun Jul 26 19:41:34 2026 ] Model:   slr_network.SLRModel.
+[ Sun Jul 26 19:41:34 2026 ] Weights: ./work_dir/baseline_res18/dev_02.58_epoch38_model.pt.
+[ Sun Jul 26 19:48:55 2026 ] Evaluation Done.
+
