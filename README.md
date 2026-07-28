@@ -10,6 +10,18 @@ BiLSTM, trained with CTC loss, following the
 - **Output:** a gloss sequence, e.g. `አባቴ ዘመድ ይወዳል`
 - **Metric:** Word Error Rate (WER), lower is better
 
+**This branch (`v2`)** adds two things to that baseline, described in
+[§13](#13-v2-attention-pooling--signer-augmentation):
+
+- **Attention temporal pooling** replacing max-pooling in the temporal conv stack
+- **Chroma-key signer augmentation**, three appearance-shifted copies per clip
+
+One command runs the whole thing:
+
+```bash
+bash run_v2.sh 40
+```
+
 ---
 
 ## Contents
@@ -26,6 +38,7 @@ BiLSTM, trained with CTC loss, following the
 10. [Configuration reference](#10-configuration-reference)
 11. [Troubleshooting](#11-troubleshooting)
 12. [Repository layout](#12-repository-layout)
+13. [v2: attention pooling + signer augmentation](#13-v2-attention-pooling--signer-augmentation)
 
 ---
 
@@ -562,11 +575,16 @@ CESLR/
 ├── test_one_video.py           # single-clip inference
 ├── show_predictions.py         # predictions vs ground truth
 ├── run_local_train.sh          # macOS one-command training
+├── run_v2.sh                   # v2 one-command run (see §13)
 ├── ceslr_kaggle_train.ipynb    # Kaggle notebook
 ├── configs/
 │   ├── CESLR.yaml              # dataset paths
-│   └── baseline.yaml           # training hyperparameters
-├── modules/                    # BiLSTM, temporal conv, CTC losses
+│   ├── baseline.yaml           # training hyperparameters
+│   ├── attn_pool.yaml          # + attention temporal pooling
+│   └── attn_pool_aug.yaml      # + chroma-key signer augmentation
+├── modules/
+│   ├── attention_pool.py       # learned temporal downsampling (v2)
+│   └── ...                     # BiLSTM, temporal conv, CTC losses
 ├── utils/
 │   ├── decode.py               # CTC decoding (pyctcdecode beam / greedy)
 │   ├── device.py               # CUDA -> MPS -> CPU selection
@@ -575,9 +593,162 @@ CESLR/
 ├── dataset/dataloader_video.py # frame loading, batching, padding
 ├── preprocess/
 │   ├── dataset_preprocess.py   # resize + generate annotations
-│   └── fix_annotations.py      # normalise Amharic, rebuild dict + STMs
-└── evaluation/slr_eval/        # WER calculation + ground-truth STMs
+│   ├── fix_annotations.py      # normalise Amharic, rebuild dict + STMs
+│   ├── generate_synthetic_clips.py  # chroma-key augmentation (v2)
+│   ├── recipes_{train,val}.yaml     # appearance recipes, disjoint banks
+│   ├── verify_synthetic.py     # contact sheet for eyeballing output
+│   └── extract_pose.py         # pose cache, unused by v2; kept for later
+└── evaluation/
+    ├── slr_eval/               # WER calculation + ground-truth STMs
+    └── fairness_report.py      # per-signer / per-sentence WER (v2)
 ```
+
+---
+
+## 13. v2: attention pooling + signer augmentation
+
+Two changes on top of the baseline. Both are off in `configs/baseline.yaml`, so
+the same code reproduces the original architecture — what varies between runs is
+the config, not the branch.
+
+### Run it
+
+```bash
+bash run_v2.sh 40
+```
+
+Runs the whole chain: annotations → synthetic clips → training → test evaluation
+→ fairness report. Each step skips itself when its output is already present, so
+an interrupted run resumes instead of redoing work.
+
+| Variable | Effect |
+|---|---|
+| `DEVICE=0,1` | multi-GPU |
+| `SKIP_SYNTH=1` | reuse synthetic clips from an earlier run |
+| `FORCE_SYNTH=1` | regenerate them |
+| `FORCE_PREP=1` | rebuild annotations — **required after changing the split CSVs** |
+| `KEEP_LAST=3` | rolling checkpoints; the best dev WER is always kept as well |
+
+> **After editing the split CSVs, pass `FORCE_PREP=1`.** Step 1 skips itself when
+> `preprocess/CESLR/gloss_dict.npy` exists, so without it you will train on the
+> previous split while believing you are on the new one.
+
+Rough timings: annotations seconds, synthetic clips ~6 min on CPU, 40 epochs ~4 h
+on a modern GPU, evaluation ~2 min. Results land in `work_dir/attn_pool_aug/`.
+
+### Attention temporal pooling
+
+`nn.MaxPool1d(2)` in `TemporalConv` keeps the single strongest frame per window
+and drops the rest, so only that frame receives gradient and the motion inside
+the window is discarded. Glosses are distinguished by how the hands travel
+through a window, not by any one peak frame, which makes that the wrong summary
+here.
+
+`AttentionPool1d` aggregates the whole window with learned per-position weights.
+Windows overlap (8 wide, stride 2), so each output sees more context than the two
+frames max-pool gives it. Output length stays `floor(T/2)`, identical to
+`MaxPool1d(2, ceil_mode=False)`, so nothing downstream changes and checkpoints
+from the baseline still load with `strict=True`.
+
+Two details that matter at this corpus size:
+
+- Attention runs in a 256-d bottleneck rather than the full 1024-d width, costing
+  **+2.1M parameters instead of +6.3M** (31.78M → 33.88M). On ~900 training clips
+  the wider version is a real overfitting risk.
+- `out_proj` is zero-initialised with the window mean added back as a residual, so
+  the block computes *exact average pooling* before training and learns to deviate
+  from there, rather than starting from random attention weights.
+
+Clips run 85–265 frames and `collate_fn` pads by replicating the last frame, so at
+batch 2 a short clip can be over half padding; the attention masks slots past each
+clip's length instead of averaging in that frozen frame.
+
+Enable with `model_args.use_attn_pool: True` (see `configs/attn_pool.yaml`).
+
+### Chroma-key signer augmentation
+
+22 signers over 30 sentences means the cheapest way to fit the training data is to
+memorise *who* is signing rather than *what* is signed. Training on several
+appearances per motion removes that shortcut.
+
+The corpus is shot against a green screen, which makes appearance editing a
+matting problem rather than a generation one. `generate_synthetic_clips.py` keys
+the signer off the screen and recomposites them over a new background, optionally
+shifting clothing hue. The signer's pixels are copied or moved in colour space and
+never resampled, so **the signing is preserved exactly and the gloss label still
+holds**. Skin is excluded from the hue shift — faces and hands keep their real
+colour, since an unnatural skin tone is an artefact a model can learn to spot.
+
+```bash
+python preprocess/generate_synthetic_clips.py --split train --variants 3
+python preprocess/verify_synthetic.py --split train --clips 6   # eyeball it
+```
+
+Three variants per clip, drawn from `recipes_train.yaml`: background only,
+clothing only, and both plus lighting. `recipes_val.yaml` holds a **disjoint**
+bank for building held-out appearance conditions — if a look appeared in both,
+robustness numbers would measure recall rather than invariance.
+
+The dataloader samples in place rather than extending the dataset, so an epoch
+still costs one pass over the corpus. Set `feeder_args.synth_prob` (0.5 by
+default): each training clip is a coin flip between the real recording and one of
+its copies. Ignored for dev and test, which always read real frames.
+
+**Why not diffusion.** Stable Diffusion with ControlNet-openpose was tried first
+and measured on real clips:
+
+| Approach | Appearance change | Handshape error | Frame-to-frame drift |
+|---|---|---|---|
+| img2img, strength 0.45 | 3.0% | — | 8.4 |
+| img2img 0.85 + hand restoration | 13.8% | **12.5% of frame width** | 16.6 |
+| **Chroma key** | **26–30%** | **0% (exact)** | **6.9–9.7** |
+| *real footage baseline* | — | — | *8.5* |
+
+Text2img ignored the source framing entirely. img2img at strengths that preserved
+the signing changed appearance by less than the 4.9% gap between two different
+real signers. Pushing strength higher and compositing the real hands back did
+raise the variation, but re-detecting pose in the output put hand keypoints
+12.5% of frame width from where they belonged — on a 256px frame that is ~32px
+against a ~40px hand, i.e. the handshape replaced rather than degraded.
+
+What this does **not** vary is signer identity: body shape and face carry through
+unchanged. Diffusion did not deliver that either at any hand-preserving setting.
+Doing it properly needs a hand-specific ControlNet (depth or normal conditioning
+on a fitted hand mesh) — noted as future work, not a parameter tweak.
+
+### Fairness report
+
+```bash
+python evaluation/fairness_report.py --work-dir ./work_dir/attn_pool_aug/ --mode test
+```
+
+A single WER hides what this corpus is most likely to get wrong. 27% mean could be
+12% on one signer and 42% on another, or an even 25–29 across all of them — the
+first says the model learned a few signers and not the rest, the second says it is
+uniformly mediocre, and only the first is fixed by more signer diversity.
+
+The per-sentence table matters for a second reason: **78% of the glosses in this
+corpus appear in exactly one sentence**, so a model can score well by classifying
+which of the 30 sentences it is looking at rather than by recognising glosses.
+Sentence classification shows up as a bimodal distribution — near-zero on
+sentences it identified, near-total on the rest — while genuine gloss recognition
+degrades smoothly.
+
+The report reuses `python_wer_evaluation`'s alignment, so its totals agree with
+the WER printed during training rather than being a second, subtly different
+metric.
+
+### Checkpoints and early stopping
+
+A checkpoint here is ~364 MB, so saving all 70 epochs needs ~25 GB. The run now
+keeps the best dev WER plus a short rolling window (`--keep-last`, default 3),
+holding a run to ~1.5 GB. Early stopping is available but **off by default**
+(`--early-stop-patience 0`): dev WER on this corpus is noisy enough that patience
+needs tuning before it can be trusted.
+
+`CTCLoss` uses `zero_infinity=True`, so a clip whose gloss sequence cannot be
+aligned to its downsampled frame count contributes zero instead of turning the
+whole batch infinite and taking the alignable clips down with it.
 
 ---
 
