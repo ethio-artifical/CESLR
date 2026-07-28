@@ -1,0 +1,55 @@
+# Iteration 1b: baseline.yaml with attention temporal pooling.
+#
+# The only difference from configs/baseline.yaml is model_args.use_attn_pool and
+# its four hyperparameters. Same split, same backbone, same losses, same
+# schedule -- so any WER difference is attributable to the pooling layer alone.
+feeder: dataset.dataloader_video.BaseFeeder
+phase: train
+dataset: CESLR
+num_epoch: 70
+work_dir: ./work_dir/attn_pool/
+batch_size: 2
+random_seed: 0
+test_batch_size: 2
+num_worker: 4
+device: 0,1
+log_interval: 50
+eval_interval: 1
+save_interval: 1
+evaluate_tool: python
+loss_weights:
+  SeqCTC: 1.0
+
+optimizer_args:
+  optimizer: Adam
+  base_lr: 0.0001
+  step: [ 20, 35]
+  learning_ratio: 1
+  weight_decay: 0.0001
+  start_epoch: 0
+  nesterov: False
+
+feeder_args:
+  mode: 'train'
+  datatype: 'video'
+  num_gloss: -1
+  drop_ratio: 1.0
+
+model: slr_network.SLRModel
+decode_mode: beam
+model_args:
+  num_classes: 13  # ignored: main.py sets it from gloss_dict (glosses + 1 blank)
+  c2d_type: resnet18
+  conv_type: 2
+  use_bn: 1
+  share_classifier: False
+  weight_norm: False
+  # Replaces the two MaxPool1d(2) layers in TemporalConv. Windows overlap
+  # (8 > stride 2) so each output sees more context than max-pool's two frames.
+  # dim 256 keeps this at +1.6M params rather than the +6.3M a full-width
+  # (1024) attention would add, which matters at ~900 training clips.
+  use_attn_pool: True
+  attn_pool_window: 8
+  attn_pool_dim: 256
+  attn_pool_heads: 4
+  attn_pool_dropout: 0.1

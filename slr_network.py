@@ -34,7 +34,9 @@ class SLRModel(nn.Module):
     def __init__(
             self, num_classes, c2d_type, conv_type, use_bn=False,
             hidden_size=1024, gloss_dict=None, loss_weights=None,
-            weight_norm=True, share_classifier=True
+            weight_norm=True, share_classifier=True,
+            use_attn_pool=False, attn_pool_window=8, attn_pool_dim=256,
+            attn_pool_heads=4, attn_pool_dropout=0.1
     ):
         super(SLRModel, self).__init__()
         self.decoder = None
@@ -48,7 +50,12 @@ class SLRModel(nn.Module):
                                    hidden_size=hidden_size,
                                    conv_type=conv_type,
                                    use_bn=use_bn,
-                                   num_classes=num_classes)
+                                   num_classes=num_classes,
+                                   use_attn_pool=use_attn_pool,
+                                   attn_pool_window=attn_pool_window,
+                                   attn_pool_dim=attn_pool_dim,
+                                   attn_pool_heads=attn_pool_heads,
+                                   attn_pool_dropout=attn_pool_dropout)
         self.decoder = utils.Decode(gloss_dict, num_classes, 'beam')
         self.temporal_model = BiLSTMLayer(rnn_type='LSTM', input_size=hidden_size, hidden_size=hidden_size,
                                           num_layers=2, bidirectional=True)

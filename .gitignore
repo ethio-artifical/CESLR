@@ -7,3 +7,12 @@ gradio_temp/
 
 # dataset pasted at repo root (frames are large; keep them out of git)
 CESLR-multisigner/
+
+# local data caches and OS cruft
+.DS_Store
+features/
+features-r18/
+features-r18-si/
+features-si/
+CESLR-multisigner/
+gradio_temp/
