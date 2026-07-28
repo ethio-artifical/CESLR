@@ -1,0 +1,57 @@
+# Appearance prompts for TRAINING augmentation.
+#
+# ControlNet holds the pose fixed, so these only change how the signer and the
+# scene look -- never what is signed. Each prompt keeps the framing the model was
+# trained on (upper body, facing camera, hands visible) so the pose conditioning
+# has an easy target; describing hands here would fight it.
+#
+# Disjoint from prompts_val.yaml on purpose. If the same appearance appeared in
+# both training augmentation and the held-out appearance conditions, the model
+# would have seen that look during training and the robustness numbers would be
+# measuring recall rather than invariance.
+
+negative: >-
+  blurry, out of focus, low quality, distorted hands, extra fingers, missing
+  fingers, deformed limbs, extra arms, cropped head, watermark, text, multiple
+  people, motion blur
+
+# One list per axis. generate_synthetic_clips.py draws variant k from axis k, so
+# every real clip yields one identity-shifted, one clothing-shifted and one
+# background-shifted copy at --variants 3.
+axes:
+
+  identity:
+    - a young woman with short natural hair, plain grey studio background,
+      upper body, facing camera, even lighting, sharp focus
+    - a middle-aged man with a short beard, plain grey studio background,
+      upper body, facing camera, even lighting, sharp focus
+    - an elderly woman with grey hair, plain grey studio background, upper body,
+      facing camera, even lighting, sharp focus
+    - a young man with glasses, plain grey studio background, upper body,
+      facing camera, even lighting, sharp focus
+    - a woman with long braided hair, plain grey studio background, upper body,
+      facing camera, even lighting, sharp focus
+
+  clothing:
+    - a person wearing a bright red t-shirt, plain background, upper body,
+      facing camera, even lighting, sharp focus
+    - a person wearing a dark blue formal suit jacket, plain background,
+      upper body, facing camera, even lighting, sharp focus
+    - a person wearing a yellow knitted sweater, plain background, upper body,
+      facing camera, even lighting, sharp focus
+    - a person wearing a white traditional cotton shawl, plain background,
+      upper body, facing camera, even lighting, sharp focus
+    - a person wearing a green striped shirt, plain background, upper body,
+      facing camera, even lighting, sharp focus
+
+  background:
+    - a person signing in a bright office with a window behind, upper body,
+      facing camera, sharp focus
+    - a person signing in a classroom with a blackboard behind, upper body,
+      facing camera, sharp focus
+    - a person signing outdoors in a garden, soft daylight, upper body,
+      facing camera, sharp focus
+    - a person signing in a living room with a bookshelf behind, upper body,
+      facing camera, sharp focus
+    - a person signing against a deep blue painted wall, upper body,
+      facing camera, sharp focus

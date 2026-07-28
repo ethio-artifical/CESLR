@@ -1,0 +1,57 @@
+# Iteration 2: attention pooling + signer augmentation.
+#
+# Identical to configs/attn_pool.yaml apart from feeder_args.synth_dir and
+# synth_prob, so the difference between the two runs isolates the augmentation.
+feeder: dataset.dataloader_video.BaseFeeder
+phase: train
+dataset: CESLR
+num_epoch: 70
+work_dir: ./work_dir/attn_pool_aug/
+batch_size: 2
+random_seed: 0
+test_batch_size: 2
+num_worker: 4
+device: 0,1
+log_interval: 50
+eval_interval: 1
+save_interval: 1
+evaluate_tool: python
+loss_weights:
+  SeqCTC: 1.0
+
+optimizer_args:
+  optimizer: Adam
+  base_lr: 0.0001
+  step: [ 20, 35]
+  learning_ratio: 1
+  weight_decay: 0.0001
+  start_epoch: 0
+  nesterov: False
+
+feeder_args:
+  mode: 'train'
+  datatype: 'video'
+  num_gloss: -1
+  drop_ratio: 1.0
+  # Each training clip is a coin flip between the real recording and one of its
+  # appearance-shifted copies. Sampling in place rather than extending the dataset
+  # keeps an epoch the same length; over 70 epochs every variant is still seen
+  # many times. Ignored for dev/test, which always read the real frames.
+  synth_dir: './dataset/CESLR/CESLR-multisigner/features/fullFrame-256x256px-synth'
+  synth_prob: 0.5
+  synth_variants: 3
+
+model: slr_network.SLRModel
+decode_mode: beam
+model_args:
+  num_classes: 13  # ignored: main.py sets it from gloss_dict (glosses + 1 blank)
+  c2d_type: resnet18
+  conv_type: 2
+  use_bn: 1
+  share_classifier: False
+  weight_norm: False
+  use_attn_pool: True
+  attn_pool_window: 8
+  attn_pool_dim: 256
+  attn_pool_heads: 4
+  attn_pool_dropout: 0.1

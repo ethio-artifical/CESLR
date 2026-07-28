@@ -25,7 +25,7 @@ sys.path.append("..")
 
 class BaseFeeder(data.Dataset):
     def __init__(self, prefix, gloss_dict, drop_ratio=1, num_gloss=-1, mode="train", transform_mode=True,
-                 datatype="lmdb"):
+                 datatype="lmdb", synth_dir=None, synth_prob=0.0, synth_variants=3):
         self.mode = mode
         self.ng = num_gloss
         self.prefix = prefix
@@ -33,6 +33,12 @@ class BaseFeeder(data.Dataset):
         self.data_type = datatype
         self.feat_prefix = f"{prefix}/features/fullFrame-256x256px/{mode}"
         self.transform_mode = "train" if transform_mode else "test"
+        # Appearance-shifted copies from generate_synthetic_clips.py. Sampled in
+        # place of the real clip rather than appended to the dataset, so an epoch
+        # still costs one pass over the corpus instead of four.
+        self.synth_dir = synth_dir
+        self.synth_prob = synth_prob if self.transform_mode == "train" else 0.0
+        self.synth_variants = synth_variants
         self.inputs_list = np.load(f"./preprocess/CESLR/{mode}_info.npy", allow_pickle=True).item()
         # self.inputs_list = np.load(f"{prefix}/annotations/manual/{mode}.corpus.npy", allow_pickle=True).item()
         # self.inputs_list = np.load(f"{prefix}/annotations/manual/{mode}.corpus.npy", allow_pickle=True).item()
@@ -55,10 +61,26 @@ class BaseFeeder(data.Dataset):
             input_data, label = self.read_features(idx)
             return input_data, label, self.inputs_list[idx]['original_info']
 
+    def synth_folder(self, fi):
+        """Glob for a random appearance-shifted copy of this clip, or None.
+
+        The label is not touched: ControlNet conditions on the source clip's pose,
+        so a synthetic copy is the same signing performed by someone who looks
+        different. Returns None when the clip was never generated, so a partial
+        run still trains on whatever exists.
+        """
+        if not self.synth_dir or random.random() >= self.synth_prob:
+            return None
+        k = random.randrange(self.synth_variants)
+        folder = os.path.join(self.synth_dir, self.mode,
+                              f"{fi['fileid']}_v{k}", "1", "*.png")
+        return folder if glob.glob(folder) else None
+
     def read_video(self, index, num_glosses=-1):
         # load file info
         fi = self.inputs_list[index]
-        img_folder = os.path.join(self.prefix, "features/fullFrame-256x256px/" + fi['folder'])
+        img_folder = self.synth_folder(fi) or os.path.join(
+            self.prefix, "features/fullFrame-256x256px/" + fi['folder'])
         img_list = sorted(glob.glob(img_folder))
         label_list = []
         for phase in fi['label'].split(" "):
