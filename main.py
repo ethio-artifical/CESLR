@@ -36,7 +36,9 @@ class Processor():
     def start(self):
         if self.arg.phase == 'train':
             self.recoder.print_log('Parameters:\n{}\n'.format(str(vars(self.arg))))
-            seq_model_list = []
+            recent = []
+            best_wer, best_epoch, since_best = float('inf'), -1, 0
+            dev_wer = float('nan')
             for epoch in range(self.arg.optimizer_args['start_epoch'], self.arg.num_epoch):
                 save_model = epoch % self.arg.save_interval == 0
                 eval_model = epoch % self.arg.eval_interval == 0
@@ -47,11 +49,46 @@ class Processor():
                     dev_wer = seq_eval(self.arg, self.data_loader['dev'], self.model, self.device,
                                        'dev', epoch, self.arg.work_dir, self.recoder, self.arg.evaluate_tool)
                     self.recoder.print_log("Dev WER: {:05.2f}%".format(dev_wer))
+
+                improved = dev_wer < best_wer - self.arg.early_stop_min_delta
+                if improved:
+                    best_wer, best_epoch, since_best = dev_wer, epoch, 0
+                elif eval_model:
+                    since_best += 1
+
                 if save_model:
-                    model_path = "{}dev_{:05.2f}_epoch{}_model.pt".format(self.arg.work_dir, dev_wer, epoch)
-                    seq_model_list.append(model_path)
-                    print("seq_model_list", seq_model_list)
+                    model_path = "{}dev_{:05.2f}_epoch{}_model.pt".format(
+                        self.arg.work_dir, dev_wer, epoch)
                     self.save_model(epoch, model_path)
+                    recent.append(model_path)
+                    # A checkpoint is ~364 MB here; keeping all 70 needs ~25 GB and
+                    # overruns Kaggle's 20 GB working directory partway through a
+                    # run. Keep the best dev WER so far plus a short rolling window,
+                    # which is all a resume or a re-evaluation actually needs.
+                    if improved:
+                        # The previous best is pinned only while it is the best. Once
+                        # it is beaten it becomes an ordinary checkpoint, and if the
+                        # rolling window has already passed it by nothing else will
+                        # ever remove it.
+                        prev_best = getattr(self, 'best_path', None)
+                        self.best_path = model_path
+                        if (prev_best and prev_best not in recent
+                                and os.path.exists(prev_best)):
+                            os.remove(prev_best)
+                    while self.arg.keep_last > 0 and len(recent) > self.arg.keep_last:
+                        stale = recent.pop(0)
+                        if stale != getattr(self, 'best_path', None) and os.path.exists(stale):
+                            os.remove(stale)
+
+                patience = self.arg.early_stop_patience
+                if patience > 0 and since_best >= patience:
+                    self.recoder.print_log(
+                        f"Early stop: dev WER has not improved for {since_best} "
+                        f"evaluations. Best {best_wer:05.2f}% at epoch {best_epoch}.")
+                    break
+            self.recoder.print_log(
+                f"Best dev WER {best_wer:05.2f}% at epoch {best_epoch} "
+                f"-> {getattr(self, 'best_path', 'not saved')}")
         elif self.arg.phase == 'test':
             if self.arg.load_weights is None and self.arg.load_checkpoints is None:
                 raise ValueError('Please appoint --load-weights.')

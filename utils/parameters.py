@@ -49,6 +49,24 @@ def get_parser():
         default=100,
         help='the interval for evaluating models (#epochs)')
     parser.add_argument(
+        '--keep-last',
+        type=int,
+        default=3,
+        help='rolling checkpoints to retain; the best dev WER is always kept '
+             'on top of these. 0 or less keeps every epoch (~364MB each)')
+    parser.add_argument(
+        '--early-stop-patience',
+        type=int,
+        default=0,
+        help='stop after this many evaluations without a dev WER improvement; '
+             '0 disables early stopping')
+    parser.add_argument(
+        '--early-stop-min-delta',
+        type=float,
+        default=0.0,
+        help='dev WER must improve by more than this (percentage points) to '
+             'count, so noise does not keep resetting the patience counter')
+    parser.add_argument(
         '--print-log',
         type=str2bool,
         default=True,

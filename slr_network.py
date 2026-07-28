@@ -133,6 +133,11 @@ class SLRModel(nn.Module):
         return loss
 
     def criterion_init(self):
-        self.loss['CTCLoss'] = torch.nn.CTCLoss(reduction='none', zero_infinity=False)
+        # zero_infinity: a clip whose gloss sequence cannot be aligned to its
+        # (downsampled) frame count gives CTC an infinite loss. With this off the
+        # whole batch turns inf and seq_train drops it, taking the alignable clips
+        # in it along too. Zeroing just that clip's term keeps the rest of the
+        # batch training.
+        self.loss['CTCLoss'] = torch.nn.CTCLoss(reduction='none', zero_infinity=True)
         self.loss['distillation'] = SeqKD(T=8)
         return self.loss
