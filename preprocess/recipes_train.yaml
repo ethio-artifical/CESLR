@@ -1,0 +1,55 @@
+# Appearance recipes for TRAINING augmentation.
+#
+# The signer is chroma-keyed off the green screen and recomposited. Their pixels
+# are copied or moved in colour space, never resampled, so the signing is exact
+# and the gloss label still holds.
+#
+# Disjoint from recipes_val.yaml on purpose. If a background or colour shift
+# appeared in both training and the held-out conditions, the model would have
+# seen that look during training and the robustness numbers would measure recall
+# rather than invariance.
+
+# Green-screen key, in OpenCV HSV (hue 0-179).
+key:
+  lower: [35, 60, 40]
+  upper: [95, 255, 255]
+  open_px: 3          # morphological open/close, removes speckle
+  feather_px: 5       # edge softening; a hard edge leaves a learnable fringe
+  fill_px: 7          # close pinholes inside the silhouette
+  despill: 0.8        # strip green bounced onto the signer from the screen
+  # Skin, in OpenCV HSV. Excluded from the hue shift so faces and hands keep
+  # their real colour -- a green face is an artefact a model can learn to spot.
+  skin:
+    lower: [0, 30, 60]
+    upper: [25, 180, 255]
+    wrap_lower: [165, 30, 60]
+    wrap_upper: [179, 180, 255]
+    feather_px: 7
+
+axes:
+
+  # Variant 0: background only. The corpus is one uniform green screen, which is
+  # a strong shortcut cue; forcing it to vary pushes attention onto the signer.
+  background:
+    - background: {kind: solid, color: [235, 235, 232]}
+    - background: {kind: solid, color: [ 45,  52,  68]}
+    - background: {kind: gradient, top: [210, 224, 238], bottom: [140, 160, 186]}
+    - background: {kind: gradient, top: [ 78,  64,  52], bottom: [ 32,  26,  22]}
+    - background: {kind: texture, color: [176, 168, 152], sigma: 20}
+
+  # Variant 1: clothing and skin tone, on a neutral background.
+  clothing:
+    - {hue:  40, sat: 1.15, val: 1.00, background: {kind: solid, color: [222, 222, 220]}}
+    - {hue:  85, sat: 1.05, val: 0.92, background: {kind: solid, color: [222, 222, 220]}}
+    - {hue: 130, sat: 1.20, val: 1.05, background: {kind: solid, color: [222, 222, 220]}}
+    - {hue: 160, sat: 0.85, val: 0.95, background: {kind: solid, color: [222, 222, 220]}}
+    - {hue:  20, sat: 1.30, val: 1.08, background: {kind: solid, color: [222, 222, 220]}}
+
+  # Variant 2: both at once, plus lighting. This is the hardest condition and the
+  # closest stand-in for "a different person filmed somewhere else".
+  combined:
+    - {hue:  55, sat: 1.10, val: 0.88, background: {kind: texture, color: [150, 140, 128], sigma: 22}}
+    - {hue: 110, sat: 1.25, val: 1.12, background: {kind: gradient, top: [200, 212, 228], bottom: [120, 136, 160]}}
+    - {hue:  15, sat: 0.90, val: 0.85, background: {kind: solid, color: [ 58,  62,  74]}}
+    - {hue: 145, sat: 1.15, val: 1.05, background: {kind: gradient, top: [238, 226, 205], bottom: [176, 156, 128]}}
+    - {hue:  70, sat: 1.00, val: 0.95, background: {kind: texture, color: [ 96, 104, 118], sigma: 16}}

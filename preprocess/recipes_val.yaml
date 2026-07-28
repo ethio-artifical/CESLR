@@ -1,0 +1,43 @@
+# Appearance recipes for the held-out APPEARANCE CONDITIONS.
+#
+# Deliberately disjoint from recipes_train.yaml: no background colour, gradient
+# or hue shift here appears there. A model trained on the training recipes has
+# never seen any of these looks, so WER on clips built from this file measures
+# invariance to appearance rather than recall of appearances it was trained on.
+#
+# Applied to dev-signer clips. Dev already holds out signers, so these vary
+# appearance on top of an already-unseen signer -- which is what the per-axis
+# columns of the results table report.
+
+key:
+  lower: [35, 60, 40]
+  upper: [95, 255, 255]
+  open_px: 3
+  feather_px: 5
+  fill_px: 7          # close pinholes inside the silhouette
+  despill: 0.8
+  # Skin, in OpenCV HSV. Excluded from the hue shift so faces and hands keep
+  # their real colour -- a green face is an artefact a model can learn to spot.
+  skin:
+    lower: [0, 30, 60]
+    upper: [25, 180, 255]
+    wrap_lower: [165, 30, 60]
+    wrap_upper: [179, 180, 255]
+    feather_px: 7
+
+axes:
+
+  background:
+    - background: {kind: solid, color: [ 12,  90, 140]}
+    - background: {kind: gradient, top: [255, 214, 170], bottom: [190, 120,  70]}
+    - background: {kind: texture, color: [ 66,  88,  70], sigma: 26}
+
+  clothing:
+    - {hue:  95, sat: 1.45, val: 1.00, background: {kind: solid, color: [222, 222, 220]}}
+    - {hue: 175, sat: 0.70, val: 1.15, background: {kind: solid, color: [222, 222, 220]}}
+    - {hue:   5, sat: 1.60, val: 0.80, background: {kind: solid, color: [222, 222, 220]}}
+
+  combined:
+    - {hue: 100, sat: 1.40, val: 0.78, background: {kind: solid, color: [ 12,  90, 140]}}
+    - {hue: 170, sat: 0.75, val: 1.18, background: {kind: gradient, top: [255, 214, 170], bottom: [190, 120,  70]}}
+    - {hue:  35, sat: 1.55, val: 0.90, background: {kind: texture, color: [ 66,  88,  70], sigma: 26}}
