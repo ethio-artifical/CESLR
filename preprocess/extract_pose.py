@@ -44,14 +44,21 @@ def load_detector(name, device):
             'For --detector dwpose also:  pip install onnxruntime-gpu')
 
     if name == 'dwpose':
+        # Construction fails in more ways than an ImportError: some controlnet_aux
+        # builds ship DWposeDetector but resolve its mmpose helpers lazily, so a
+        # missing mmpose surfaces as NameError at __init__ instead. Catch broadly
+        # and say what to do about it -- silently falling back to openpose would
+        # quietly cost hand-keypoint accuracy, which is the whole signal here.
         try:
             from controlnet_aux import DWposeDetector
-        except ImportError:
+            det = DWposeDetector()
+        except Exception as e:
             raise SystemExit(
-                'This controlnet_aux build has no DWposeDetector. Either upgrade\n'
-                '    pip install -U controlnet_aux onnxruntime-gpu\n'
-                'or fall back to  --detector openpose  (fewer hand keypoints).')
-        det = DWposeDetector()
+                f'DWposeDetector unavailable ({type(e).__name__}: {e}).\n'
+                'It needs mmpose:\n'
+                '    pip install -U openmim && mim install "mmpose>=1.1.0" mmdet mmengine\n'
+                'Or run with  --detector openpose , which needs nothing extra but\n'
+                'resolves hands less precisely (21 keypoints vs 133 whole-body).')
         if hasattr(det, 'to'):
             det = det.to(device)
         return det, False
