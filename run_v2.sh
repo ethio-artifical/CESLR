@@ -48,14 +48,58 @@ fi
 echo
 echo "=== 3/4  Train ==="
 WORK_DIR=$("$PY" -c "import yaml;print(yaml.safe_load(open('$CONFIG'))['work_dir'])")
+mkdir -p "$WORK_DIR"
 # Resume from the newest checkpoint if one exists, so an interrupted run picks up
 # where it stopped rather than restarting from epoch 0.
 RESUME=""
 LATEST=$(ls -t "${WORK_DIR}"*.pt 2>/dev/null | head -1 || true)
 [ -n "$LATEST" ] && RESUME="--load-checkpoints $LATEST" && echo "    resuming from $LATEST"
 
+WORKERS=""
+[ -n "${NUM_WORKER:-}" ] && WORKERS="--num-worker $NUM_WORKER" \
+    && echo "    dataloader workers: $NUM_WORKER"
+BATCH=""
+[ -n "${BATCH_SIZE:-}" ] && BATCH="--batch-size $BATCH_SIZE" \
+    && echo "    batch size: $BATCH_SIZE"
+
+# Keep stderr in the work dir. A scheduler may route the job's stderr somewhere
+# this script never sees, and a process killed by a signal -- the OOM killer, a
+# memory or time limit -- writes no Python traceback at all, so without this a
+# failed run leaves nothing to diagnose from.
+ERR="${WORK_DIR}train.err"
+set +e
 "$PY" main.py --config "$CONFIG" --device "${DEVICE:-0}" \
-    --num-epoch "$EPOCHS" --keep-last "${KEEP_LAST:-3}" $RESUME
+    --num-epoch "$EPOCHS" --keep-last "${KEEP_LAST:-3}" $RESUME $WORKERS $BATCH \
+    2> >(tee "$ERR" >&2)
+STATUS=$?
+set -e
+
+if [ "$STATUS" -ne 0 ]; then
+    echo
+    echo "=== Training exited $STATUS ==="
+    if [ "$STATUS" -gt 128 ]; then
+        echo "    Killed by signal $((STATUS - 128))."
+        [ "$STATUS" -eq 137 ] && echo "    137 is SIGKILL — almost always the OOM killer" \
+            && echo "    or a scheduler memory limit. Nothing is wrong with the code;" \
+            && echo "    the job needs more RAM, or fewer workers / a smaller batch:" \
+            && echo "        NUM_WORKER=2 BATCH_SIZE=1 bash run_v2.sh $EPOCHS"
+        [ "$STATUS" -eq 143 ] && echo "    143 is SIGTERM — usually a scheduler time limit."
+    fi
+    if [ -s "$ERR" ]; then
+        echo
+        echo "--- last 30 lines of $ERR ---"
+        # tqdm draws with carriage returns, so the whole progress bar is one
+        # enormous "line"; split on \r before tailing or this prints nothing useful.
+        tr '\r' '\n' < "$ERR" | grep -v '^[[:space:]]*$' | tail -30
+    else
+        echo "    No stderr was produced, which is itself the signal: a Python"
+        echo "    exception would have written a traceback here."
+    fi
+    echo
+    echo "    On SLURM, this settles it:"
+    echo "        sacct -j \$SLURM_JOB_ID --format=State,ExitCode,MaxRSS,ReqMem,Elapsed"
+    exit "$STATUS"
+fi
 
 echo
 echo "=== 4/4  Evaluate + fairness ==="

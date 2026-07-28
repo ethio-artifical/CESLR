@@ -115,17 +115,32 @@ class SLRModel(nn.Module):
             "recognized_sents": pred,
         }
 
+    def ctc(self, logits, label, feat_len, label_lgt):
+        """CTC loss, forced onto PyTorch's own kernel rather than cuDNN's.
+
+        cuDNN ships a fused CTC kernel that torch picks automatically, and on some
+        CUDA/cuDNN builds it aborts with CUDNN_STATUS_EXECUTION_FAILED once
+        zero_infinity is set -- observed on CUDA 13.0, driver 580, on the first
+        training batch. Disabling cuDNN for this one call selects the native CUDA
+        implementation, which honours zero_infinity correctly. The rest of the
+        network still uses cuDNN; only the loss changes backend, and it is a small
+        fraction of step time.
+        """
+        with torch.backends.cudnn.flags(enabled=False):
+            return self.loss['CTCLoss'](logits.log_softmax(-1),
+                                        label.cpu().int(),
+                                        feat_len.cpu().int(),
+                                        label_lgt.cpu().int()).mean()
+
     def criterion_calculation(self, ret_dict, label, label_lgt):
         loss = 0
         for k, weight in self.loss_weights.items():
             if k == 'ConvCTC':
-                loss += weight * self.loss['CTCLoss'](ret_dict["conv_logits"].log_softmax(-1),
-                                                      label.cpu().int(), ret_dict["feat_len"].cpu().int(),
-                                                      label_lgt.cpu().int()).mean()
+                loss += weight * self.ctc(ret_dict["conv_logits"], label,
+                                          ret_dict["feat_len"], label_lgt)
             elif k == 'SeqCTC':
-                loss += weight * self.loss['CTCLoss'](ret_dict["sequence_logits"].log_softmax(-1),
-                                                      label.cpu().int(), ret_dict["feat_len"].cpu().int(),
-                                                      label_lgt.cpu().int()).mean()
+                loss += weight * self.ctc(ret_dict["sequence_logits"], label,
+                                          ret_dict["feat_len"], label_lgt)
             elif k == 'Dist':
                 loss += weight * self.loss['distillation'](ret_dict["conv_logits"],
                                                            ret_dict["sequence_logits"].detach(),
